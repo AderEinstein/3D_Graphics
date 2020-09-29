@@ -40,6 +40,4 @@
 #define NOIMAGE
 #define NOTAPE
 
-#define STRICT
-
 #include <Windows.h>
