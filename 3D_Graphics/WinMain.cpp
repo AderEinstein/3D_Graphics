@@ -1,4 +1,5 @@
 #include "Window.h"
+#include "WndExceptMacros.h"
 
 int CALLBACK WinMain(
 	HINSTANCE hInstance,	
@@ -17,10 +18,10 @@ int CALLBACK WinMain(
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
-
+		//check if get message failed
 		if (exit_code == -1)
 		{
-			return -1;
+			WND_LAST_EXCEPT();
 		}
 	}
 	catch (const AderException& e)
