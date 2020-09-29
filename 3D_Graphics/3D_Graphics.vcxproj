@@ -153,6 +153,7 @@
     <ClCompile Include="App.cpp" />
     <ClCompile Include="keyboard.cpp" />
     <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
@@ -162,6 +163,7 @@
     <ClInclude Include="keyboard.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="WndExceptMacros.h" />
     <ClInclude Include="AderWin.h" />
     <ClInclude Include="Window.h" />
