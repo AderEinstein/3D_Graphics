@@ -130,14 +130,14 @@ LRESULT Window::handleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 		kbd.ClearState();
 	}
 	// KEYBOARD MESSAGES
-	else if (msg == WM_KEYDOWN)
+	else if (msg == WM_KEYDOWN || msg == WM_SYSKEYDOWN) // also handle syskey msgs to track ALT key(VK_MENU) and F10
 	{
 		if (!(lParam & 0x40000000) || kbd.AutorepeatIsEnabled()) // Filter autorepeat
 		{
 			kbd.OnKeyPressed(static_cast<unsigned char>(wParam));
 		}
 	}
-	else if (msg == WM_KEYUP)
+	else if (msg == WM_KEYUP || msg == WM_SYSKEYUP)
 	{
 		kbd.OnKeyReleased(static_cast<unsigned char>(wParam));
 	}
