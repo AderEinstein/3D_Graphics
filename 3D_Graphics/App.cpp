@@ -2,7 +2,7 @@
 
 App::App()
 	:
-	wnd(1080, 720, "AEinstein3D Graphics")
+	wnd(800, 600, "AEinstein3D Graphics")
 {}
 
 int App::Go()
@@ -22,6 +22,9 @@ void App::DoFrame()
 {
 	const float c = cos(timer.Peek()) / 2.0f + 0.5f;
 	wnd.Gfx().ClearBuffer(0, c, 1.0f);
-	wnd.Gfx().DrawTestTriangle();
+	wnd.Gfx().DrawTestTriangle(
+		timer.Peek(),
+		wnd.mouse.GetPosX() / 400.0f - 1.0f,
+		-wnd.mouse.GetPosY() / 300.0f + 1.0f);
 	wnd.Gfx().EndFrame();
 }
