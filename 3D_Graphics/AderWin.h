@@ -1,7 +1,6 @@
 #pragma once
 
 // Target latest Windows versions
-#define _WIN32_WINNT 0x0601 
 #include <sdkddkver.h>
 
 // These #define switches prevent the inclusion of some unused WinAPI stuff when including <Windows.h> anywhere else.
@@ -39,5 +38,6 @@
 #define NOPROXYSTUB
 #define NOIMAGE
 #define NOTAPE
+
 
 #include <Windows.h>
