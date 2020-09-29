@@ -1,5 +1,15 @@
 #include <Windows.h>
 
+LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	if (msg == WM_CLOSE)
+	{
+		PostQuitMessage(80);  // 80 is a arbitrary exit value to test exit_code in WinMain
+	}
+
+	return DefWindowProc(hWnd, msg, wParam, lParam); // the default procedure will handle WM_QUIT msg
+}
+
 int CALLBACK WinMain(
 	HINSTANCE hInstance,	
 	HINSTANCE hPrevInstance,
@@ -10,7 +20,7 @@ int CALLBACK WinMain(
 
 	const wchar_t className[] = L"AEinstein3D";
 	WNDCLASSEX wc = { };
-	wc.lpfnWndProc = DefWindowProc;
+	wc.lpfnWndProc = WndProc;
 	wc.hInstance = hInstance;
 	wc.lpszClassName = className;
 	wc.lpszMenuName = nullptr;
@@ -52,9 +62,14 @@ int CALLBACK WinMain(
 	BOOL exit_code;
 	while ( (exit_code = GetMessage( &msg, nullptr, 0, 0 )) > 0 )
 	{
-		TranslateMessage( &msg );
+		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
+
+	if (exit_code == -1)
+		return -1;
+	else
+		return msg.wParam;	// 80
 
 	return 0;
 }
