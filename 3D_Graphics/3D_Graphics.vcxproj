@@ -151,6 +151,8 @@
   <ItemGroup>
     <ClCompile Include="AderException.cpp" />
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="dxerr.cpp" />
+    <ClCompile Include="DxgiInfoManager.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="keyboard.cpp" />
     <ClCompile Include="Mouse.cpp" />
@@ -161,6 +163,9 @@
   <ItemGroup>
     <ClInclude Include="AderException.h" />
     <ClInclude Include="App.h" />
+    <ClInclude Include="dxerr.h" />
+    <ClInclude Include="DxgiInfoManager.h" />
+    <ClInclude Include="GfxThrowMacros.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="keyboard.h" />
     <ClInclude Include="Mouse.h" />
@@ -175,6 +180,11 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="AEinstein.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DXGetErrorDescription.inl" />
+    <None Include="DXGetErrorString.inl" />
+    <None Include="DXTrace.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

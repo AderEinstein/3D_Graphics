@@ -15,20 +15,33 @@ public:
 	Window& operator=(const Window&) = delete;
 	~Window();
 	void setTitle(const std::string& title);
-	static std::optional<int> ProcessMessages();
+	static std::optional<int> ProcessMessages() noexcept;
 	Graphics& Gfx();
 
 	class Exception : public AderException
 	{
+		using AderException::AderException;
 	public:
-		Exception(int line, const char* file, HRESULT hr) noexcept;
-		const char* what() const noexcept override;
-		virtual const char* getType() const noexcept;
 		static std::string translateErrorCode(HRESULT hr) noexcept;
-		HRESULT getErrorCode() const noexcept;
-		std::string getErrorString() const noexcept;
+	};
+
+	class HrException : public Exception
+	{
+	public:
+		HrException(int line, const char* file, HRESULT hr) noexcept;
+		const char* what() const noexcept override;
+		const char* getType() const noexcept override;
+		HRESULT GetErrorCode() const noexcept;
+		std::string GetErrorDescription() const noexcept;
 	private:
 		HRESULT hr;
+	};
+
+	class NoGfxException : public Exception
+	{
+	public:
+		using Exception::Exception;
+		const char* getType() const noexcept override;
 	};
 
 	Keyboard kbd;
