@@ -33,7 +33,7 @@ Window::WindowClass::WindowClass() noexcept
 	RegisterClassEx(&wc);
 }
 
-const wchar_t* Window::WindowClass::getWndClassName() noexcept
+const char* Window::WindowClass::getWndClassName() noexcept
 {
 	return wndClassName;
 }
@@ -51,7 +51,7 @@ Window::WindowClass::~WindowClass()
 
 //********************************************************************************************************************************************************************
 
-Window::Window(int width, int height, const wchar_t* WndName) 
+Window::Window(int width, int height, const char* WndName) 
 {
 	// Calc Windows Rectangle Position
 	RECT wr;
@@ -83,7 +83,7 @@ Window::Window(int width, int height, const wchar_t* WndName)
 
 	ShowWindow(hWnd, SW_SHOWDEFAULT);
 
-	throw WND_EXCEPT(ERROR_ARENA_TRASHED);
+	throw WND_EXCEPT(ERROR_ARENA_TRASHED);	// throw arbitrary window error to test exception handling
 }
 
 Window::~Window()
@@ -155,7 +155,7 @@ std::string Window::Exception::translateErrorCode(HRESULT hr) noexcept
 	DWORD msgLen = FormatMessage(
 		FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_IGNORE_INSERTS,
 		nullptr, hr, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-		reinterpret_cast<LPWSTR>(&pMsgBuf), 0, nullptr
+		reinterpret_cast<LPSTR>(&pMsgBuf), 0, nullptr
 	);
 	if (msgLen == 0)
 	{

@@ -5,7 +5,7 @@
 class Window
 {
 public:
-	Window(int width, int height, const wchar_t* name);
+	Window(int width, int height, const char* name);
 	Window(const Window&) = delete;
 	Window& operator=(const Window&) = delete;
 	~Window();
@@ -29,14 +29,14 @@ private:
 	class WindowClass // Singleton which will manage window class registration
 	{
 	public:
-		static const wchar_t* getWndClassName() noexcept;
+		static const char* getWndClassName() noexcept;
 		static HINSTANCE getWndInstance() noexcept;
 	private:
 		WindowClass() noexcept;
 		WindowClass(const WindowClass&) = delete;
 		WindowClass& operator=(const WindowClass&) = delete;
 		~WindowClass();
-		static constexpr const wchar_t* wndClassName = L"AEinstein 3D";
+		static constexpr const char* wndClassName = "AEinstein 3D";
 		HINSTANCE hInst;
 		static WindowClass wndClass;
 	};
