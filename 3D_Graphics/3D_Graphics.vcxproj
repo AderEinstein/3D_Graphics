@@ -149,10 +149,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AderException.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AderException.h" />
+    <ClInclude Include="WndExceptMacros.h" />
     <ClInclude Include="AderWin.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>

@@ -1,5 +1,10 @@
 #include "Window.h"
+#include "WndExceptMacros.h"
+#include <sstream>
 
+// Error exception helper macros
+#define AWND_EXCEPT( hr ) Window::Exception( __LINE__,__FILE__,hr )
+#define AWND_LAST_EXCEPT() Window::Exception( __LINE__,__FILE__,GetLastError() )
 
 // Singleton:WindowClass Registration
 
@@ -44,9 +49,9 @@ Window::WindowClass::~WindowClass()
 }
 
 
-//*******************************************************************************************************************************************************
+//********************************************************************************************************************************************************************
 
-Window::Window(int width, int height, const wchar_t* WndName) noexcept
+Window::Window(int width, int height, const wchar_t* WndName) 
 {
 	// Calc Windows Rectangle Position
 	RECT wr;
@@ -54,7 +59,10 @@ Window::Window(int width, int height, const wchar_t* WndName) noexcept
 	wr.right = width + wr.left;
 	wr.top = 100;
 	wr.bottom = height + wr.top;
-	AdjustWindowRect(&wr, WS_SYSMENU | WS_CAPTION | WS_MINIMIZEBOX, FALSE);
+	if (FAILED(AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE)))
+	{
+		throw WND_LAST_EXCEPT();
+	};
 
 	hWnd = CreateWindow(
 		WindowClass::getWndClassName(),				
@@ -68,7 +76,14 @@ Window::Window(int width, int height, const wchar_t* WndName) noexcept
 		this							// Additional Application Data
 	);
 
+	if (hWnd == nullptr)
+	{
+		throw WND_LAST_EXCEPT();
+	}
+
 	ShowWindow(hWnd, SW_SHOWDEFAULT);
+
+	throw WND_EXCEPT(ERROR_ARENA_TRASHED);
 }
 
 Window::~Window()
@@ -113,4 +128,55 @@ LRESULT Window::handleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 	}
 
 	return DefWindowProc(hWnd, msg, wParam, lParam); // The default window procedure will handle WM_QUIT msg
+}
+
+//************************************************************************************************************************************************************************
+//Wnd Exceptions
+Window::Exception::Exception(int line, const char* file, HRESULT hr) noexcept
+	:
+	AderException(line, file),
+	hr(hr)
+{}
+
+const char* Window::Exception::what() const noexcept
+{
+	std::ostringstream oss;
+	oss << getType() << std::endl
+		<< "Error Code :: " << getErrorCode() << std::endl
+		<< "Description :: " << getErrorString() << std::endl
+		<< getSourceString();
+	whatBuffer = oss.str();
+	return whatBuffer.c_str();
+}
+
+std::string Window::Exception::translateErrorCode(HRESULT hr) noexcept
+{
+	char* pMsgBuf = nullptr;
+	DWORD msgLen = FormatMessage(
+		FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_IGNORE_INSERTS,
+		nullptr, hr, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+		reinterpret_cast<LPWSTR>(&pMsgBuf), 0, nullptr
+	);
+	if (msgLen == 0)
+	{
+		return "Unidentified Error_Code";
+	}
+	std::string errorString = pMsgBuf;
+	LocalFree(pMsgBuf);
+	return errorString;
+}
+
+HRESULT Window::Exception::getErrorCode() const noexcept
+{
+	return hr;
+}
+
+const char* Window::Exception::getType() const noexcept
+{
+	return "Ader Window Exception";
+}
+
+std::string Window::Exception::getErrorString() const noexcept
+{
+	return translateErrorCode(hr);
 }
