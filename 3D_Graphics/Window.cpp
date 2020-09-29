@@ -208,14 +208,8 @@ LRESULT Window::handleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 	else if (msg == WM_MOUSEWHEEL)
 	{
 		const POINTS point = MAKEPOINTS(lParam);
-		if (GET_WHEEL_DELTA_WPARAM(wParam) > 0)
-		{
-			mouse.OnWheelUp(point.x, point.y);
-		}
-		else if (GET_WHEEL_DELTA_WPARAM(wParam) < 0)
-		{
-			mouse.OnWheelDown(point.x, point.y);
-		}
+		const int delta = GET_WHEEL_DELTA_WPARAM(wParam);
+		mouse.OnWheelDelta(point.x, point.y, delta);
 	}
 
 	return DefWindowProc(hWnd, msg, wParam, lParam); // The default window procedure will handle WM_QUIT msg
