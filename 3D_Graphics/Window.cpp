@@ -53,6 +53,9 @@ Window::WindowClass::~WindowClass()
 //********************************************************************************************************************************************************************
 
 Window::Window(int width, int height, const char* WndName) 
+	:
+	width(width),
+	height(height)
 {
 	// Calc Windows Rectangle Position
 	RECT wr;
@@ -149,7 +152,7 @@ LRESULT Window::handleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 	/////////////////////////////////////////////////////MOUSE MESSAGES//////////////////////////////////////////////////////////////////
 	else if (msg == WM_MOUSEMOVE)
 	{
-		POINTS pt = MAKEPOINTS(lParam);
+		const POINTS pt = MAKEPOINTS(lParam);
 		mouse.OnMouseMove(pt.x, pt.y);
 	}
 	else if (msg == WM_LBUTTONDOWN)
