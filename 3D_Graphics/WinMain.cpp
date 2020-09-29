@@ -1,14 +1,4 @@
-#include <Windows.h>
-
-LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
-{
-	if (msg == WM_CLOSE)
-	{
-		PostQuitMessage(80);  // 80 is a arbitrary exit value to test exit_code in WinMain
-	}
-
-	return DefWindowProc(hWnd, msg, wParam, lParam); // the default procedure will handle WM_QUIT msg
-}
+#include "Window.h"
 
 int CALLBACK WinMain(
 	HINSTANCE hInstance,	
@@ -16,60 +6,20 @@ int CALLBACK WinMain(
 	LPSTR     lpCmdLine,
 	int       nCmdShow)
 {
-	// Register the window class.
+	Window wnd(650, 400, L"AEinstein Win");
 
-	const wchar_t className[] = L"AEinstein3D";
-	WNDCLASSEX wc = { };
-	wc.lpfnWndProc = WndProc;
-	wc.hInstance = hInstance;
-	wc.lpszClassName = className;
-	wc.lpszMenuName = nullptr;
-	wc.cbSize = sizeof(wc);
-	wc.cbClsExtra = 0;
-	wc.cbWndExtra = 0;
-	wc.style = CS_OWNDC;
-	wc.hIcon = nullptr;
-	wc.hIconSm = nullptr;
-	wc.hCursor = nullptr;
-	wc.hbrBackground = nullptr;
-	
-	RegisterClassEx(&wc);
-
-	// Create a window instance.
-
-	HWND hwnd = CreateWindowEx(
-		0,                              // Optional window styles.
-		className,                      // Window class
-		L"First Window baby",			// Window text
-		WS_OVERLAPPEDWINDOW,            // Window style
-		// Size and position
-		CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
-		nullptr,       // Parent window    
-		nullptr,       // Menu
-		hInstance,	   // Instance handle
-		nullptr        // Additional application data
-	);
-
-	if (hwnd == nullptr)
-	{
-		return 0;
-	}
-
-	ShowWindow(hwnd, nCmdShow);
-
-	// Message pump
 	MSG msg;
-	BOOL exit_code;
-	while ( (exit_code = GetMessage( &msg, nullptr, 0, 0 )) > 0 )
+	BOOL gResult;
+	while ((gResult = GetMessage(&msg, nullptr, 0, 0)) > 0)
 	{
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
 
-	if (exit_code == -1)
+	if (gResult == -1)
+	{
 		return -1;
-	else
-		return msg.wParam;	// 80
+	}
 
-	return 0;
+	return msg.wParam;
 }
