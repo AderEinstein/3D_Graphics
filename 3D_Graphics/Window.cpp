@@ -160,30 +160,8 @@ LRESULT Window::handleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 	else if (msg == WM_LBUTTONDOWN)
 	{
 		const POINTS point = MAKEPOINTS(lParam);
-		// In client region : log move, and log enter + capture mouse (if not previously in window)
-		if (point.x >= 0 && point.x < width && point.y >= 0 && point.y < height)
-		{
-			mouse.OnMouseMove(point.x, point.y);
-			if (!mouse.IsInWindow())
-			{
-				SetCapture(hWnd);
-				mouse.OnMouseEnter();
-			}
-		}
-		// Out of client : log move, maintain capture if button down
-		else
-		{
-			if (wParam & (MK_LBUTTON | MK_RBUTTON))
-			{
-				mouse.OnMouseMove(point.x, point.y);
-			}
-			// Button up: release capture / log event for leaving
-			else
-			{
-				ReleaseCapture();
-				mouse.OnMouseLeave();
-			}
-		}
+		mouse.OnLeftPressed(point.x, point.y);
+		SetForegroundWindow(hWnd); // Bring window to foreground on left mouse button click in client region
 	}
 	else if (msg == WM_RBUTTONDOWN)
 	{
