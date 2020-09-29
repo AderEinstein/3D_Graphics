@@ -1,6 +1,7 @@
 #include "Window.h"
 #include "WndExceptMacros.h"
 #include <sstream>
+#include "resource.h"
 
 // Error exception helper macros
 #define AWND_EXCEPT( hr ) Window::Exception( __LINE__,__FILE__,hr )
@@ -25,8 +26,8 @@ Window::WindowClass::WindowClass() noexcept
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
 	wc.style = CS_OWNDC;
-	wc.hIcon = nullptr;
-	wc.hIconSm = nullptr;
+	wc.hIcon = static_cast<HICON>(LoadImage(getWndInstance(), MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, 64, 64, 0));
+	wc.hIconSm = static_cast<HICON>(LoadImage(getWndInstance(), MAKEINTRESOURCE(IDI_ICON1),IMAGE_ICON, 32, 32, 0));
 	wc.hCursor = nullptr;
 	wc.hbrBackground = nullptr;
 
@@ -82,8 +83,6 @@ Window::Window(int width, int height, const char* WndName)
 	}
 
 	ShowWindow(hWnd, SW_SHOWDEFAULT);
-
-	throw WND_EXCEPT(ERROR_ARENA_TRASHED);	// throw arbitrary window error to test exception handling
 }
 
 Window::~Window()

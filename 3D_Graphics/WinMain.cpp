@@ -8,7 +8,7 @@ int CALLBACK WinMain(
 {
 	try
 	{
-		Window wnd(1080, 720, "AEinstein Win");
+		Window wnd(1080, 720, "AEinstein3D Graphics");
 
 		MSG msg;
 		BOOL exit_code;

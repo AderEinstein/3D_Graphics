@@ -155,9 +155,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AderException.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="WndExceptMacros.h" />
     <ClInclude Include="AderWin.h" />
     <ClInclude Include="Window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="3D_Graphics.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="AEinstein.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
