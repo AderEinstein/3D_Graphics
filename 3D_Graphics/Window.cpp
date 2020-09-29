@@ -273,3 +273,23 @@ void Window::setTitle(const std::string& title)
 		throw WND_LAST_EXCEPT();
 	}
 }
+
+std::optional<int> Window::ProcessMessages()
+{
+	MSG msg;
+
+	while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))	// While queue has messages, remove and dispatch them (but do not block on empty queue)
+	{
+		// Check for quit because PeekMessage does not signal this via its return value
+		if (msg.message == WM_QUIT)
+		{
+			return msg.wParam;	// Return optional wrapping int to signal quit
+		}
+
+		TranslateMessage(&msg);	// TranslateMessage will post auxilliary WM_CHAR messages from key msgs
+		DispatchMessage(&msg);
+	}
+
+	// Return empty optional to not quit the app
+	return {};
+}

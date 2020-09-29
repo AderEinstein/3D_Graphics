@@ -3,6 +3,7 @@
 #include "AderException.h"
 #include "keyboard.h"
 #include "Mouse.h"
+#include <optional>
 
 class Window
 {
@@ -12,6 +13,7 @@ public:
 	Window& operator=(const Window&) = delete;
 	~Window();
 	void setTitle(const std::string& title);
+	static std::optional<int> ProcessMessages();
 
 	class Exception : public AderException
 	{
