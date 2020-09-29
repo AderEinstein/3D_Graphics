@@ -1,5 +1,6 @@
 #include "Window.h"
 #include "WndExceptMacros.h"
+#include <sstream>
 
 int CALLBACK WinMain(
 	HINSTANCE hInstance,	
@@ -18,9 +19,15 @@ int CALLBACK WinMain(
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 
-			if (wnd.kbd.KeyIsPressed(VK_MENU))
+			while (!wnd.mouse.IsEmpty())
 			{
-				MessageBox(nullptr, "A key was pressed", "Alt in the place!", MB_OK | MB_ICONEXCLAMATION);
+				const auto e = wnd.mouse.Read();
+				if (e.GetType() == Mouse::Event::Type::Move)
+				{
+					std::ostringstream oss;
+					oss << "Mouse Position: (" << e.GetPosX() << "," << e.GetPosY() << ")";
+					wnd.setTitle(oss.str());
+				}
 			}
 		}
 		//check if get message failed

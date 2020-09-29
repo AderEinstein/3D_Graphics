@@ -60,10 +60,10 @@ Window::Window(int width, int height, const char* WndName)
 	wr.right = width + wr.left;
 	wr.top = 100;
 	wr.bottom = height + wr.top;
-	if (FAILED(AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE)))
+	if ( (AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE)) == 0)
 	{
 		throw WND_LAST_EXCEPT();
-	};
+	}
 
 	hWnd = CreateWindow(
 		WindowClass::getWndClassName(),				
@@ -129,7 +129,7 @@ LRESULT Window::handleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 	{
 		kbd.ClearState();
 	}
-	// KEYBOARD MESSAGES
+	///////////////////////////////////////////////////KEYBOARD MESSAGES////////////////////////////////////////////////////////////////
 	else if (msg == WM_KEYDOWN || msg == WM_SYSKEYDOWN) // also handle syskey msgs to track ALT key(VK_MENU) and F10
 	{
 		if (!(lParam & 0x40000000) || kbd.AutorepeatIsEnabled()) // Filter autorepeat
@@ -144,6 +144,45 @@ LRESULT Window::handleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 	else if (msg == WM_CHAR)
 	{
 		kbd.OnChar(static_cast<unsigned char>(wParam));
+	}
+
+	/////////////////////////////////////////////////////MOUSE MESSAGES//////////////////////////////////////////////////////////////////
+	else if (msg == WM_MOUSEMOVE)
+	{
+		POINTS pt = MAKEPOINTS(lParam);
+		mouse.OnMouseMove(pt.x, pt.y);
+	}
+	else if (msg == WM_LBUTTONDOWN)
+	{
+		const POINTS pt = MAKEPOINTS(lParam);
+		mouse.OnLeftPressed(pt.x, pt.y);
+	}
+	else if (msg == WM_RBUTTONDOWN)
+	{
+		const POINTS pt = MAKEPOINTS(lParam);
+		mouse.OnRightPressed(pt.x, pt.y);
+	}
+	else if (msg == WM_LBUTTONUP)
+	{
+		const POINTS pt = MAKEPOINTS(lParam);
+		mouse.OnLeftReleased(pt.x, pt.y);
+	}
+	else if (msg == WM_RBUTTONUP)
+	{
+		const POINTS pt = MAKEPOINTS(lParam);
+		mouse.OnRightReleased(pt.x, pt.y);
+	}
+	else if (msg == WM_MOUSEWHEEL)
+	{
+		const POINTS pt = MAKEPOINTS(lParam);
+		if (GET_WHEEL_DELTA_WPARAM(wParam) > 0)
+		{
+			mouse.OnWheelUp(pt.x, pt.y);
+		}
+		else if (GET_WHEEL_DELTA_WPARAM(wParam) < 0)
+		{
+			mouse.OnWheelDown(pt.x, pt.y);
+		}
 	}
 
 	return DefWindowProc(hWnd, msg, wParam, lParam); // The default window procedure will handle WM_QUIT msg
@@ -198,4 +237,12 @@ const char* Window::Exception::getType() const noexcept
 std::string Window::Exception::getErrorString() const noexcept
 {
 	return translateErrorCode(hr);
+}
+
+void Window::setTitle(const std::string& title)
+{
+	if (SetWindowText(hWnd, title.c_str()) == 0)
+	{
+		throw WND_LAST_EXCEPT();
+	}
 }

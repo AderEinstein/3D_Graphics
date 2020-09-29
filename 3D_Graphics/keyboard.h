@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 #include <queue>
 #include <bitset>
 
@@ -18,7 +17,7 @@ public:
 			Release,
 			Invalid
 		};
-		Event()
+		Event() noexcept
 			:
 			type(Type::Invalid),
 			code(0u)

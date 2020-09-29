@@ -2,6 +2,7 @@
 #include "AderWin.h"
 #include "AderException.h"
 #include "keyboard.h"
+#include "Mouse.h"
 
 class Window
 {
@@ -10,6 +11,7 @@ public:
 	Window(const Window&) = delete;
 	Window& operator=(const Window&) = delete;
 	~Window();
+	void setTitle(const std::string& title);
 
 	class Exception : public AderException
 	{
@@ -25,7 +27,7 @@ public:
 	};
 
 	Keyboard kbd;
-
+	Mouse mouse;
 
 private:
 
@@ -51,6 +53,5 @@ private:
 	int width;
 	int height;
 	HWND hWnd;
-
 };
 
