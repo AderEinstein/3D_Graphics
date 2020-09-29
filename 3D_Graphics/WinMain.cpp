@@ -6,20 +6,20 @@ int CALLBACK WinMain(
 	LPSTR     lpCmdLine,
 	int       nCmdShow)
 {
-	Window wnd(650, 400, L"AEinstein Win");
+	Window wnd(1080, 720, L"AEinstein Win");
 
 	MSG msg;
-	BOOL gResult;
-	while ((gResult = GetMessage(&msg, nullptr, 0, 0)) > 0)
+	BOOL exit_code;
+	while ((exit_code = GetMessage(&msg, nullptr, 0, 0)) > 0)
 	{
 		TranslateMessage(&msg);
 		DispatchMessage(&msg);
 	}
 
-	if (gResult == -1)
+	if (exit_code == -1)
 	{
 		return -1;
 	}
 
-	return msg.wParam;
+	return msg.wParam; // This wparam is the value passed to PostQuitMessage
 }

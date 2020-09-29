@@ -12,14 +12,14 @@ private:
 	class WindowClass // Sincleton which will manage window class registration
 	{
 	public:
-		static const wchar_t* getName() noexcept;
-		static HINSTANCE getInstance() noexcept;
+		static const wchar_t* getWndClassName() noexcept;
+		static HINSTANCE getWndInstance() noexcept;
 	private:
 		WindowClass() noexcept;
 		WindowClass(const WindowClass&) = delete;
 		WindowClass& operator=(const WindowClass&) = delete;
 		~WindowClass();
-		static constexpr const wchar_t* wndClassName = L"AderEinstein 3D Graphics Engine";
+		static constexpr const wchar_t* wndClassName = L"AEinstein 3D";
 		HINSTANCE hInst;
 		static WindowClass wndClass;
 	};

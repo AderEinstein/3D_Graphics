@@ -1,7 +1,7 @@
 #include "Window.h"
 
 
-// Window Class Registration
+// Singleton:WindowClass Registration
 
 Window::WindowClass Window::WindowClass::wndClass;
 
@@ -11,11 +11,10 @@ Window::WindowClass::WindowClass() noexcept
 {
 	// Register the window class.
 
-	//const wchar_t className[] = L"AEinstein3D";
 	WNDCLASSEX wc = { };
 	wc.lpfnWndProc = handleMsgSetup;
-	wc.hInstance = getInstance();
-	wc.lpszClassName = getName();
+	wc.hInstance = getWndInstance();
+	wc.lpszClassName = getWndClassName();
 	wc.lpszMenuName = nullptr;
 	wc.cbSize = sizeof(wc);
 	wc.cbClsExtra = 0;
@@ -29,24 +28,25 @@ Window::WindowClass::WindowClass() noexcept
 	RegisterClassEx(&wc);
 }
 
-Window::WindowClass::~WindowClass()
-{
-	UnregisterClass(wndClassName, getInstance());
-}
-
-const wchar_t* Window::WindowClass::getName() noexcept
+const wchar_t* Window::WindowClass::getWndClassName() noexcept
 {
 	return wndClassName;
 }
 
-HINSTANCE Window::WindowClass::getInstance() noexcept
+HINSTANCE Window::WindowClass::getWndInstance() noexcept
 {
 	return wndClass.hInst;
 }
 
+Window::WindowClass::~WindowClass()
+{
+	UnregisterClass(wndClassName, getWndInstance());
+}
+
+
 //*******************************************************************************************************************************************************
 
-Window::Window(int width, int height, const wchar_t* name) noexcept
+Window::Window(int width, int height, const wchar_t* WndName) noexcept
 {
 	// Calc Windows Rectangle Position
 	RECT wr;
@@ -57,10 +57,15 @@ Window::Window(int width, int height, const wchar_t* name) noexcept
 	AdjustWindowRect(&wr, WS_SYSMENU | WS_CAPTION | WS_MINIMIZEBOX, FALSE);
 
 	hWnd = CreateWindow(
-		WindowClass::getName(), name,
-		WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,
+		WindowClass::getWndClassName(),				
+		WndName,
+		WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,	
+		// Size and position
 		CW_USEDEFAULT, CW_USEDEFAULT, wr.right - wr.left, wr.bottom - wr.top,
-		nullptr, nullptr, WindowClass::getInstance(), this
+		nullptr,						// Parent Window
+		nullptr,						// Menu
+		WindowClass::getWndInstance(),	// Instance Handle
+		this							// Additional Application Data
 	);
 
 	ShowWindow(hWnd, SW_SHOWDEFAULT);
@@ -100,10 +105,12 @@ LRESULT CALLBACK Window::handleMsgLink(HWND hWnd, UINT msg, WPARAM wParam, LPARA
 
 LRESULT Window::handleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept
 {
+	
 	if (msg == WM_CLOSE)
 	{
-		PostQuitMessage(80);  // 80 is a arbitrary exit value to test exit_code in WinMain
+		PostQuitMessage(0);  
+		return 0;  // Since we want to destroy the window using our window class destructor instead of using DefWindowProc, we return if we get a WM_CLOSE msg
 	}
 
-	return DefWindowProc(hWnd, msg, wParam, lParam); // the default procedure will handle WM_QUIT msg
+	return DefWindowProc(hWnd, msg, wParam, lParam); // The default window procedure will handle WM_QUIT msg
 }
