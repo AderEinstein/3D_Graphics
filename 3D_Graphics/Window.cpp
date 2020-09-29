@@ -157,34 +157,64 @@ LRESULT Window::handleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 	}
 	else if (msg == WM_LBUTTONDOWN)
 	{
-		const POINTS pt = MAKEPOINTS(lParam);
-		mouse.OnLeftPressed(pt.x, pt.y);
+		const POINTS point = MAKEPOINTS(lParam);
+		// In client region : log move, and log enter + capture mouse (if not previously in window)
+		if (point.x >= 0 && point.x < width && point.y >= 0 && point.y < height)
+		{
+			mouse.OnMouseMove(point.x, point.y);
+			if (!mouse.IsInWindow())
+			{
+				SetCapture(hWnd);
+				mouse.OnMouseEnter();
+			}
+		}
+		// Out of client : log move, maintain capture if button down
+		else
+		{
+			if (wParam & (MK_LBUTTON | MK_RBUTTON))
+			{
+				mouse.OnMouseMove(point.x, point.y);
+			}
+			// Button up: release capture / log event for leaving
+			else
+			{
+				ReleaseCapture();
+				mouse.OnMouseLeave();
+			}
+		}
 	}
 	else if (msg == WM_RBUTTONDOWN)
 	{
-		const POINTS pt = MAKEPOINTS(lParam);
-		mouse.OnRightPressed(pt.x, pt.y);
+		const POINTS point = MAKEPOINTS(lParam);
+		mouse.OnRightPressed(point.x, point.y);
 	}
 	else if (msg == WM_LBUTTONUP)
 	{
-		const POINTS pt = MAKEPOINTS(lParam);
-		mouse.OnLeftReleased(pt.x, pt.y);
+		const POINTS point = MAKEPOINTS(lParam);
+		mouse.OnLeftReleased(point.x, point.y);
+
+		// Release mouse when it goes outside of the window
+		if (point.x < 0 || point.x >= width || point.y < 0 || point.y >= height)
+		{
+			ReleaseCapture();
+			mouse.OnMouseLeave();
+		}
 	}
 	else if (msg == WM_RBUTTONUP)
 	{
-		const POINTS pt = MAKEPOINTS(lParam);
-		mouse.OnRightReleased(pt.x, pt.y);
+		const POINTS point = MAKEPOINTS(lParam);
+		mouse.OnRightReleased(point.x, point.y);
 	}
 	else if (msg == WM_MOUSEWHEEL)
 	{
-		const POINTS pt = MAKEPOINTS(lParam);
+		const POINTS point = MAKEPOINTS(lParam);
 		if (GET_WHEEL_DELTA_WPARAM(wParam) > 0)
 		{
-			mouse.OnWheelUp(pt.x, pt.y);
+			mouse.OnWheelUp(point.x, point.y);
 		}
 		else if (GET_WHEEL_DELTA_WPARAM(wParam) < 0)
 		{
-			mouse.OnWheelDown(pt.x, pt.y);
+			mouse.OnWheelDown(point.x, point.y);
 		}
 	}
 

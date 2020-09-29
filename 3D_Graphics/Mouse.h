@@ -18,6 +18,8 @@ public:
 			WheelUp,
 			WheelDown,
 			Move,
+			Enter,
+			Leave,
 			Invalid
 		};
 
@@ -86,6 +88,7 @@ public:
 	int GetPosY() const noexcept;
 	bool LeftIsPressed() const noexcept;
 	bool RightIsPressed() const noexcept;
+	bool IsInWindow() const noexcept;
 	Mouse::Event Read() noexcept;
 	bool IsEmpty() const noexcept
 	{
@@ -101,6 +104,8 @@ private:
 	void OnRightReleased(int x, int y) noexcept;
 	void OnWheelUp(int x, int y) noexcept;
 	void OnWheelDown(int x, int y) noexcept;
+	void OnMouseLeave() noexcept;
+	void OnMouseEnter() noexcept;
 	void TrimBuffer() noexcept;
 
 	static constexpr unsigned int bufferSize = 16u;
@@ -108,6 +113,7 @@ private:
 	int y;
 	bool leftIsPressed = false;
 	bool rightIsPressed = false;
+	bool isInWindow = false;
 	std::queue<Event> buffer;
 
 };
