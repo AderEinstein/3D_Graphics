@@ -119,11 +119,31 @@ LRESULT CALLBACK Window::handleMsgLink(HWND hWnd, UINT msg, WPARAM wParam, LPARA
 
 LRESULT Window::handleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept
 {
-	
+
 	if (msg == WM_CLOSE)
 	{
-		PostQuitMessage(0);  
+		PostQuitMessage(0);
 		return 0;  // Since we want to destroy the window using our window class destructor instead of using DefWindowProc, we return if we get a WM_CLOSE msg
+	}
+	else if (msg == WM_KILLFOCUS) // Reset keyboard key_states when we switch window focus
+	{
+		kbd.ClearState();
+	}
+	// KEYBOARD MESSAGES
+	else if (msg == WM_KEYDOWN)
+	{
+		if (!(lParam & 0x40000000) || kbd.AutorepeatIsEnabled()) // Filter autorepeat
+		{
+			kbd.OnKeyPressed(static_cast<unsigned char>(wParam));
+		}
+	}
+	else if (msg == WM_KEYUP)
+	{
+		kbd.OnKeyReleased(static_cast<unsigned char>(wParam));
+	}
+	else if (msg == WM_CHAR)
+	{
+		kbd.OnChar(static_cast<unsigned char>(wParam));
 	}
 
 	return DefWindowProc(hWnd, msg, wParam, lParam); // The default window procedure will handle WM_QUIT msg

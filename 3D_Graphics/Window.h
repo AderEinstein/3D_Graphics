@@ -1,6 +1,7 @@
 #pragma once
 #include "AderWin.h"
 #include "AderException.h"
+#include "keyboard.h"
 
 class Window
 {
@@ -22,6 +23,8 @@ public:
 	private:
 		HRESULT hr;
 	};
+
+	Keyboard kbd;
 
 
 private:
@@ -48,5 +51,6 @@ private:
 	int width;
 	int height;
 	HWND hWnd;
+
 };
 

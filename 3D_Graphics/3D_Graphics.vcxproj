@@ -150,11 +150,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AderException.cpp" />
+    <ClCompile Include="keyboard.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AderException.h" />
+    <ClInclude Include="keyboard.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="WndExceptMacros.h" />
     <ClInclude Include="AderWin.h" />

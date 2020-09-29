@@ -17,6 +17,11 @@ int CALLBACK WinMain(
 		{
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
+
+			if (wnd.kbd.KeyIsPressed(VK_SPACE))
+			{
+				MessageBox(nullptr, "A key was pressed!", "Gi me some Space", MB_OK | MB_ICONEXCLAMATION);
+			}
 		}
 		//check if get message failed
 		if (exit_code == -1)
