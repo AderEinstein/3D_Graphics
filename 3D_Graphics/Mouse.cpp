@@ -1,5 +1,5 @@
+#include "AderWin.h"
 #include "Mouse.h"
-#include <Windows.h>
 
 std::pair<int, int> Mouse::GetPos() const noexcept
 {
@@ -26,7 +26,7 @@ bool Mouse::RightIsPressed() const noexcept
 	return rightIsPressed;
 }
 
-Mouse::Event Mouse::Read() noexcept
+std::optional<Mouse::Event> Mouse::Read() noexcept
 {
 	if (buffer.size() > 0u)
 	{
@@ -34,10 +34,7 @@ Mouse::Event Mouse::Read() noexcept
 		buffer.pop();
 		return e;
 	}
-	else
-	{
-		return Mouse::Event();
-	}
+	return {};
 }
 
 bool Mouse::IsInWindow() const noexcept
