@@ -7,24 +7,18 @@ App::App()
 
 int App::Go()
 {
-	Window wnd();
-
-	MSG msg;
-	BOOL exit_code;
-	while ((exit_code = GetMessage(&msg, nullptr, 0, 0)) > 0)
+	while (true)
 	{
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
+		if (const auto exit_code = Window::ProcessMessages())
+		{
+			return *exit_code;
+		}
+		DoFrame();
 	}
-	if (exit_code == -1)
-	{
-		WND_LAST_EXCEPT();
-	}
-
-	return msg.wParam;
+	return 0;
 }
 
 void App::DoFrame()
 {
-
+	wnd.Gfx().EndFrame();
 }

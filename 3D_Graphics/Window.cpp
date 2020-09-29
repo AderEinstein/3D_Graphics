@@ -86,6 +86,8 @@ Window::Window(int width, int height, const char* WndName)
 	}
 
 	ShowWindow(hWnd, SW_SHOWDEFAULT);
+
+	pGfx = std::make_unique<Graphics>(hWnd);
 }
 
 Window::~Window()
@@ -283,7 +285,7 @@ std::optional<int> Window::ProcessMessages()
 		// Check for quit because PeekMessage does not signal this via its return value
 		if (msg.message == WM_QUIT)
 		{
-			return msg.wParam;	// Return optional wrapping int to signal quit
+			return (int)msg.wParam;	// Return optional wrapping int to signal quit
 		}
 
 		TranslateMessage(&msg);	// TranslateMessage will post auxilliary WM_CHAR messages from key msgs
@@ -292,4 +294,9 @@ std::optional<int> Window::ProcessMessages()
 
 	// Return empty optional to not quit the app
 	return {};
+}
+
+Graphics& Window::Gfx()
+{
+	return *pGfx;
 }

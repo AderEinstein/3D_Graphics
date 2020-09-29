@@ -1,9 +1,11 @@
 #pragma once
 #include "AderWin.h"
 #include "AderException.h"
+#include "Graphics.h"
 #include "keyboard.h"
 #include "Mouse.h"
 #include <optional>
+#include <memory>
 
 class Window
 {
@@ -14,6 +16,7 @@ public:
 	~Window();
 	void setTitle(const std::string& title);
 	static std::optional<int> ProcessMessages();
+	Graphics& Gfx();
 
 	class Exception : public AderException
 	{
@@ -55,5 +58,6 @@ private:
 	int width;
 	int height;
 	HWND hWnd;
+	std::unique_ptr<Graphics> pGfx;
 };
 
