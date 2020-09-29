@@ -34,20 +34,27 @@ int CALLBACK WinMain(
 		WS_OVERLAPPEDWINDOW,            // Window style
 		// Size and position
 		CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
-		NULL,       // Parent window    
-		NULL,       // Menu
-		hInstance,  // Instance handle
-		NULL        // Additional application data
+		nullptr,       // Parent window    
+		nullptr,       // Menu
+		hInstance,	   // Instance handle
+		nullptr        // Additional application data
 	);
 
-	if (hwnd == NULL)
+	if (hwnd == nullptr)
 	{
 		return 0;
 	}
 
 	ShowWindow(hwnd, nCmdShow);
 
-	while (true);
-	
+	// Message pump
+	MSG msg;
+	BOOL exit_code;
+	while ( (exit_code = GetMessage( &msg, nullptr, 0, 0 )) > 0 )
+	{
+		TranslateMessage( &msg );
+		DispatchMessage(&msg);
+	}
+
 	return 0;
 }
