@@ -197,7 +197,7 @@ std::string Graphics::InfoException::GetErrorInfo() const noexcept
 }
 
 
-void Graphics::DrawTestTriangle(float angle)
+void Graphics::DrawTestTriangle(float angle, float x, float y)
 {
 
 	HRESULT hr;
@@ -250,7 +250,8 @@ void Graphics::DrawTestTriangle(float angle)
 		{
 			dx::XMMatrixTranspose(
 				dx::XMMatrixRotationZ(angle) *
-				dx::XMMatrixScaling(1.0f*Window::ScreenHeight/Window::ScreenWidth,1.0f,1.0f)
+				dx::XMMatrixScaling(1.0f*Window::ScreenHeight/Window::ScreenWidth,1.0f,1.0f) *
+				dx::XMMatrixTranslation(x,y,0.0f)
 			)
 		}
 	};
