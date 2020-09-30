@@ -52,17 +52,14 @@ Window::WindowClass::~WindowClass()
 
 //********************************************************************************************************************************************************************
 
-Window::Window(int width, int height, const char* WndName) 
-	:
-	width(width),
-	height(height)
+Window::Window(const char* WndName) 
 {
 	// Calc Windows Rectangle Position
 	RECT wr;
 	wr.left = 100;
-	wr.right = width + wr.left;
+	wr.right = ScreenWidth + wr.left;
 	wr.top = 100;
-	wr.bottom = height + wr.top;
+	wr.bottom = ScreenHeight + wr.top;
 	if ( (AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE)) == 0)
 	{
 		throw WND_LAST_EXCEPT();
@@ -73,7 +70,7 @@ Window::Window(int width, int height, const char* WndName)
 		WndName,
 		WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,	
 		// Size and position
-		CW_USEDEFAULT, CW_USEDEFAULT, wr.right - wr.left, wr.bottom - wr.top,
+		200, 20, wr.right - wr.left, wr.bottom - wr.top,
 		nullptr,						// Parent Window
 		nullptr,						// Menu
 		WindowClass::getWndInstance(),	// Instance Handle
@@ -160,8 +157,30 @@ LRESULT Window::handleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 	else if (msg == WM_LBUTTONDOWN)
 	{
 		const POINTS point = MAKEPOINTS(lParam);
-		mouse.OnLeftPressed(point.x, point.y);
-		SetForegroundWindow(hWnd); // Bring window to foreground on left mouse button click in client region
+		// In client region : log move, and log enter + capture mouse (if not previously in window)
+		if (point.x >= 0 && point.x < ScreenWidth && point.y >= 0 && point.y < ScreenHeight)
+		{
+			mouse.OnMouseMove(point.x, point.y);
+			if (!mouse.IsInWindow())
+			{
+				SetCapture(hWnd);
+				mouse.OnMouseEnter();
+			}
+		}
+		// Out of client : log move, maintain capture if button down
+		else
+		{
+			if (wParam & (MK_LBUTTON | MK_RBUTTON))
+			{
+				mouse.OnMouseMove(point.x, point.y);
+			}
+			// Button up: release capture / log event for leaving
+			else
+			{
+				ReleaseCapture();
+				mouse.OnMouseLeave();
+			}
+		}
 	}
 	else if (msg == WM_RBUTTONDOWN)
 	{
@@ -174,7 +193,7 @@ LRESULT Window::handleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 		mouse.OnLeftReleased(point.x, point.y);
 
 		// Release mouse when it goes outside of the window
-		if (point.x < 0 || point.x >= width || point.y < 0 || point.y >= height)
+		if (point.x < 0 || point.x >= ScreenWidth || point.y < 0 || point.y >= ScreenHeight)
 		{
 			ReleaseCapture();
 			mouse.OnMouseLeave();
