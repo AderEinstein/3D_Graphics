@@ -197,21 +197,24 @@ std::string Graphics::InfoException::GetErrorInfo() const noexcept
 
 void Graphics::DrawTestTriangle()
 {
-	namespace wrl = Microsoft::WRL;
+
 	HRESULT hr;
 
 	struct Vertex
 	{
 		float x;
 		float y;
+		float r;
+		float g;
+		float b;
 	};
 
 	// Create vertex buffer (1 2d triangle at center of screen)
 	const Vertex vertices[] =
 	{
-		{ 0.0f,0.5f },
-		{ 0.5f,-0.5f },
-		{ -0.5f,-0.5f },
+		{ 0.0f,0.5f,1.0f,0.0f,0.0f },
+		{ 0.5f,-0.5f,0.0f,1.0f,0.0f },
+		{ -0.5f,-0.5f,0.0f,0.0f,1.0f },
 	};
 	wrl::ComPtr<ID3D11Buffer> pVertexBuffer;
 	D3D11_BUFFER_DESC bd = {};
@@ -230,13 +233,13 @@ void Graphics::DrawTestTriangle()
 	const UINT offset = 0u;
 	pContext->IASetVertexBuffers(0u, 1u, pVertexBuffer.GetAddressOf(), &stride, &offset);
 
-	// create pixel shader
+	// Create pixel shader
 	wrl::ComPtr<ID3D11PixelShader> pPixelShader;
 	wrl::ComPtr<ID3DBlob> pBlob;
 	GFX_THROW_INFO(D3DReadFileToBlob(L"PixelShader.cso", &pBlob));
 	GFX_THROW_INFO(pDevice->CreatePixelShader(pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pPixelShader));
 
-	// bind pixel shader
+	// Bind pixel shader
 	pContext->PSSetShader(pPixelShader.Get(), nullptr, 0u);
 
 	// Create vertex shader
@@ -252,6 +255,7 @@ void Graphics::DrawTestTriangle()
 	const D3D11_INPUT_ELEMENT_DESC ied[] =
 	{
 		{ "Position",0,DXGI_FORMAT_R32G32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },
+		{ "Color",0,DXGI_FORMAT_R32G32B32_FLOAT,0,8u,D3D11_INPUT_PER_VERTEX_DATA,0 },
 	};
 	GFX_THROW_INFO(pDevice->CreateInputLayout(
 		ied, (UINT)std::size(ied),
