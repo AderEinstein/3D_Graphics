@@ -120,7 +120,7 @@ const char* Graphics::HrException::what() const noexcept
 		oss << "\nError Info::\n" << GetErrorInfo() << std::endl << std::endl;
 	}
 
-	oss <<  getSourceString();
+	oss << getSourceString();
 	whatBuffer = oss.str();
 	return whatBuffer.c_str();
 }
@@ -204,22 +204,16 @@ void Graphics::DrawTestTriangle(float angle, float x, float y)
 
 	struct Vertex
 	{
-		struct
-		{
-			float x;
-			float y;
-		} pos;
-		struct
-		{
-			unsigned char r;
-			unsigned char g;
-			unsigned char b;
-			unsigned char a;
-		} color;
+		float x;
+		float y;
+		unsigned char r;
+		unsigned char g;
+		unsigned char b;
+		unsigned char a;
 	};
 
 	// Create vertex buffer (1 2d triangle at center of screen)
-	Vertex vertices[] =
+	const Vertex vertices[] =
 	{
 		{ 0.0f,0.5f,0,0,255,0 },
 		{ 0.5f,-0.5f,0,255,0,0 },
@@ -228,8 +222,6 @@ void Graphics::DrawTestTriangle(float angle, float x, float y)
 		{ 0.7f,0.7f,0,0,255,0 },
 		{ 0.0f,-0.7f,255,0,0,0 },
 	};
-	vertices[2].color.b = 255;
-
 	wrl::ComPtr<ID3D11Buffer> pVertexBuffer;
 	D3D11_BUFFER_DESC bd = {};
 	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
@@ -258,11 +250,23 @@ void Graphics::DrawTestTriangle(float angle, float x, float y)
 		{
 			dx::XMMatrixTranspose(
 				dx::XMMatrixRotationZ(angle) *
-				dx::XMMatrixScaling(1.0f*Window::ScreenHeight/Window::ScreenWidth,1.0f,1.0f) *
+				dx::XMMatrixScaling(1.0f * Window::ScreenHeight / Window::ScreenWidth,1.0f,1.0f) *
 				dx::XMMatrixTranslation(x,y,0.0f)
 			)
 		}
 	};
+
+	wrl::ComPtr<ID3D11Buffer> pConstantBuffer;
+	D3D11_BUFFER_DESC cbd;
+	cbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	cbd.Usage = D3D11_USAGE_DYNAMIC;
+	cbd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	cbd.MiscFlags = 0u;
+	cbd.ByteWidth = sizeof(cb);
+	cbd.StructureByteStride = 0u;
+	D3D11_SUBRESOURCE_DATA csd = {};
+	csd.pSysMem = &cb;
+	GFX_THROW_INFO(pDevice->CreateBuffer(&cbd, &csd, &pConstantBuffer));
 
 	// Bind constant buffer to vertex shader
 	pContext->VSSetConstantBuffers(0u, 1u, pConstantBuffer.GetAddressOf());
@@ -291,7 +295,6 @@ void Graphics::DrawTestTriangle(float angle, float x, float y)
 	// Bind index buffer
 	pContext->IASetIndexBuffer(pIndexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0u);
 
-  
 	// Create pixel shader
 	wrl::ComPtr<ID3D11PixelShader> pPixelShader;
 	wrl::ComPtr<ID3DBlob> pBlob;
@@ -342,6 +345,6 @@ void Graphics::DrawTestTriangle(float angle, float x, float y)
 	vp.TopLeftY = 0;
 	pContext->RSSetViewports(1u, &vp);
 
-  
+
 	GFX_THROW_INFO_ONLY(pContext->DrawIndexed((UINT)std::size(indices), 0u, 0u));
 }
