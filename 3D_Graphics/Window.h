@@ -10,7 +10,7 @@
 class Window
 {
 public:
-	Window(int width, int height, const char* name);
+	Window(const char* name);
 	Window(const Window&) = delete;
 	Window& operator=(const Window&) = delete;
 	~Window();
@@ -47,6 +47,9 @@ public:
 	Keyboard kbd;
 	Mouse mouse;
 
+	static constexpr int ScreenWidth = 1080;
+	static constexpr int ScreenHeight = 720;
+
 private:
 
 	class WindowClass // Singleton which will manage window class registration
@@ -68,8 +71,6 @@ private:
 	static LRESULT CALLBACK handleMsgLink(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
 	LRESULT handleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
 
-	int width;
-	int height;
 	HWND hWnd;
 	std::unique_ptr<Graphics> pGfx;
 };

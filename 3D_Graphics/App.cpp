@@ -2,7 +2,7 @@
 
 App::App()
 	:
-	wnd(1080, 720, "AEinstein3D Graphics")
+	wnd("AEinstein3D Graphics")
 {}
 
 int App::Go()

@@ -3,6 +3,7 @@
 #include "dxerr.h"
 #include "GfxThrowMacros.h"
 #include <d3dcompiler.h>
+#include "Window.h"
 
 #pragma comment(lib,"d3d11.lib")
 #pragma comment(lib,"D3DCompiler.lib")
@@ -270,8 +271,8 @@ void Graphics::DrawTestTriangle()
 
 	// configure viewport
 	D3D11_VIEWPORT vp;
-	vp.Width = 800;
-	vp.Height = 600;
+	vp.Width = Window::ScreenWidth;
+	vp.Height = Window::ScreenHeight;
 	vp.MinDepth = 0;
 	vp.MaxDepth = 1;
 	vp.TopLeftX = 0;
