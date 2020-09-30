@@ -7,10 +7,12 @@ class App
 {
 public:
 	App();
+	~App();
 	int Go(); // Message loop
 
 private:
 	void DoFrame();
 	Window wnd;
+	std::vector<std::unique_ptr<class Box>> boxes;
 	Timer timer;
 };
