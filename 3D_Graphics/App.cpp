@@ -22,6 +22,8 @@ void App::DoFrame()
 {
 	const float g = cos(timer.Peek()) / 2.0f + 0.5f;
 	wnd.Gfx().ClearBuffer(0, g, 1.0f);
-	wnd.Gfx().DrawTestTriangle();
+	wnd.Gfx().DrawTestTriangle(
+		timer.Peek()
+	);
 	wnd.Gfx().EndFrame();
 }

@@ -15,7 +15,7 @@ public:
 	~Graphics() = default;
 	Graphics(const Graphics&) = delete;
 	Graphics& operator=(const Graphics&) = delete;
-	void DrawTestTriangle();
+	void DrawTestTriangle(float angle);
 	void ClearBuffer(float red, float green, float blue) noexcept;
 	void EndFrame();
 
