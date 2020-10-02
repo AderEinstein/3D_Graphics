@@ -14,5 +14,6 @@ private:
 	void DoFrame();
 	Window wnd;
 	std::vector<std::unique_ptr<class Box>> boxes;
-	Timer timer;
+	Timer timer1;
+	Timer timer2;
 };

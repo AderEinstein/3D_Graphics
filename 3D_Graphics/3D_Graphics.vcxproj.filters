@@ -174,7 +174,7 @@
       <Filter>Header Files\Bindables</Filter>
     </ClInclude>
     <ClInclude Include="ConstantBuffers.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Bindables</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

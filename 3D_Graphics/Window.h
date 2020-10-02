@@ -10,7 +10,7 @@
 class Window
 {
 public:
-	Window(const char* name);
+	Window(int width, int height, const char* name);
 	Window(const Window&) = delete;
 	Window& operator=(const Window&) = delete;
 	~Window();
@@ -47,9 +47,6 @@ public:
 	Keyboard kbd;
 	Mouse mouse;
 
-	static constexpr int ScreenWidth = 1080;
-	static constexpr int ScreenHeight = 720;
-
 private:
 
 	class WindowClass // Singleton which will manage window class registration
@@ -73,5 +70,8 @@ private:
 
 	HWND hWnd;
 	std::unique_ptr<Graphics> pGfx;
+	int width;
+	int height;
+	
 };
 

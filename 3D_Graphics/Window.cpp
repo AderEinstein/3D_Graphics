@@ -3,15 +3,11 @@
 #include <sstream>
 #include "resource.h"
 
-// Error exception helper macros
-#define AWND_EXCEPT( hr ) Window::Exception( __LINE__,__FILE__,hr )
-#define AWND_LAST_EXCEPT() Window::Exception( __LINE__,__FILE__,GetLastError() )
-
 // Singleton:WindowClass Registration
 
 Window::WindowClass Window::WindowClass::wndClass;
 
-Window::WindowClass::WindowClass() noexcept 
+Window::WindowClass::WindowClass() noexcept
 	:
 	hInst(GetModuleHandle(nullptr))
 {
@@ -27,7 +23,7 @@ Window::WindowClass::WindowClass() noexcept
 	wc.cbWndExtra = 0;
 	wc.style = CS_OWNDC;
 	wc.hIcon = static_cast<HICON>(LoadImage(getWndInstance(), MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, 64, 64, 0));
-	wc.hIconSm = static_cast<HICON>(LoadImage(getWndInstance(), MAKEINTRESOURCE(IDI_ICON1),IMAGE_ICON, 32, 32, 0));
+	wc.hIconSm = static_cast<HICON>(LoadImage(getWndInstance(), MAKEINTRESOURCE(IDI_ICON1), IMAGE_ICON, 32, 32, 0));
 	wc.hCursor = nullptr;
 	wc.hbrBackground = nullptr;
 
@@ -52,23 +48,26 @@ Window::WindowClass::~WindowClass()
 
 //********************************************************************************************************************************************************************
 
-Window::Window(const char* WndName) 
+Window::Window(int width, int height, const char* WndName)
+	:
+	width(width),
+	height(height)
 {
 	// Calc Windows Rectangle Position
 	RECT wr;
 	wr.left = 100;
-	wr.right = ScreenWidth + wr.left;
+	wr.right = width + wr.left;
 	wr.top = 100;
-	wr.bottom = ScreenHeight + wr.top;
-	if ( (AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE)) == 0)
+	wr.bottom = height + wr.top;
+	if ((AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE)) == 0)
 	{
 		throw WND_LAST_EXCEPT();
 	}
 
 	hWnd = CreateWindow(
-		WindowClass::getWndClassName(),				
+		WindowClass::getWndClassName(),
 		WndName,
-		WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,	
+		WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,
 		// Size and position
 		200, 20, wr.right - wr.left, wr.bottom - wr.top,
 		nullptr,						// Parent Window
@@ -158,7 +157,7 @@ LRESULT Window::handleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 	{
 		const POINTS point = MAKEPOINTS(lParam);
 		// In client region : log move, and log enter + capture mouse (if not previously in window)
-		if (point.x >= 0 && point.x < ScreenWidth && point.y >= 0 && point.y < ScreenHeight)
+		if (point.x >= 0 && point.x < width && point.y >= 0 && point.y < height)
 		{
 			mouse.OnMouseMove(point.x, point.y);
 			if (!mouse.IsInWindow())
@@ -193,7 +192,7 @@ LRESULT Window::handleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 		mouse.OnLeftReleased(point.x, point.y);
 
 		// Release mouse when it goes outside of the window
-		if (point.x < 0 || point.x >= ScreenWidth || point.y < 0 || point.y >= ScreenHeight)
+		if (point.x < 0 || point.x >= width || point.y < 0 || point.y >= height)
 		{
 			ReleaseCapture();
 			mouse.OnMouseLeave();
@@ -253,7 +252,7 @@ const char* Window::HrException::what() const noexcept
 
 const char* Window::HrException::getType() const noexcept
 {
-	return "Chili Window Exception";
+	return "Window Exception";
 }
 
 HRESULT Window::HrException::GetErrorCode() const noexcept
@@ -269,7 +268,7 @@ std::string Window::HrException::GetErrorDescription() const noexcept
 
 const char* Window::NoGfxException::getType() const noexcept
 {
-	return "Ader Window Exception [No Graphics]";
+	return "Window Exception [No Graphics]";
 }
 
 void Window::setTitle(const std::string& title)
