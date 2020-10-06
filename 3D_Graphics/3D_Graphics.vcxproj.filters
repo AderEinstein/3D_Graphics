@@ -176,6 +176,9 @@
     <ClInclude Include="ConstantBuffers.h">
       <Filter>Header Files\Bindables</Filter>
     </ClInclude>
+    <ClInclude Include="DrawableBase.h">
+      <Filter>Source Files\Drawable</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="3D_Graphics.rc">
