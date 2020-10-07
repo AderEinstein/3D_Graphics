@@ -6,18 +6,17 @@ class Bindable;
 
 class Drawable
 {
-
 public:
 	Drawable() = default;
 	Drawable(const Drawable&) = delete;
 	virtual DirectX::XMMATRIX GetTransformXM() const noexcept = 0;
 	void Draw(Graphics& gfx) const noexcept(!IS_DEBUG);
 	virtual void Update(float dt) noexcept = 0;
-	void AddBind(std::unique_ptr<Bindable> bind) noexcept(!IS_DEBUG);
-	/*void AddIndexBuffer(std::unique_ptr<class IndexBuffer> ibuf) noexcept(!IS_DEBUG); // We don't need this anymore since we're setting index buffer from static binds (See DrawableBase.h) */
 	virtual ~Drawable() = default;
 
 protected:
+	/*void AddIndexBuffer(std::unique_ptr<class IndexBuffer> ibuf) noexcept(!IS_DEBUG); // We don't need this anymore since we're setting index buffer from static binds (See DrawableBase.h) */
+	void AddBind(std::unique_ptr<Bindable> bind) noexcept(!IS_DEBUG);
 	virtual const std::vector<std::unique_ptr<Bindable>>& GetStaticBinds() const noexcept = 0;
 
 	const class IndexBuffer* pIndexBuffer = nullptr;

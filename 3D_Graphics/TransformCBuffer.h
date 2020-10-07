@@ -6,7 +6,7 @@
 class TransformCBuffer : public Bindable
 {
 private:
-	VertexConstantBuffer<DirectX::XMMATRIX> vcbuf;
+	std::unique_ptr<VertexConstantBuffer<DirectX::XMMATRIX>> pVcbuf;
 	const Drawable& parent;
 
 public:
