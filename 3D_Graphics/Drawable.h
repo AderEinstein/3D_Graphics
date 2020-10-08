@@ -15,7 +15,7 @@ public:
 	virtual ~Drawable() = default;
 
 protected:
-	/*void AddIndexBuffer(std::unique_ptr<class IndexBuffer> ibuf) noexcept(!IS_DEBUG); // We don't need this anymore since we're setting index buffer from static binds (See DrawableBase.h) */
+	void AddIndexBuffer(std::unique_ptr<class IndexBuffer> ibuf) noexcept(!IS_DEBUG); 
 	void AddBind(std::unique_ptr<Bindable> bind) noexcept(!IS_DEBUG);
 	virtual const std::vector<std::unique_ptr<Bindable>>& GetStaticBinds() const noexcept = 0;
 

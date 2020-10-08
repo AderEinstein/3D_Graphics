@@ -1,21 +1,13 @@
 #include "App.h"
-#include "Box.h"
-#include "memory"
-#include <random>
 
 App::App()
 	:
 	wnd(800, 600, "AEinstein3D Graphics")
 {
-	std::mt19937 rng(std::random_device{}());
-	std::uniform_real_distribution<float> adist(0.0f, 3.1415f * 2.0f);
-	std::uniform_real_distribution<float> ddist(0.0f, 3.1415f * 2.0f);
-	std::uniform_real_distribution<float> odist(0.0f, 3.1415f * 0.3f);
-	std::uniform_real_distribution<float> rdist(6.0f, 20.0f);
-	for (auto i = 0; i < 69; i++)
-	{
-		boxes.push_back(std::make_unique<Box>(wnd.Gfx(), rng, adist, ddist, odist, rdist));
-	}
+	Factory f(wnd.Gfx());
+	drawables.reserve(nDrawables);
+	std::generate_n(std::back_inserter(drawables), nDrawables, f);
+
 	wnd.Gfx().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 0.75f, 0.5f, 40.0f));
 }
 
@@ -41,10 +33,10 @@ void App::DoFrame()
 	wnd.Gfx().ClearBuffer(0, g, 1.0f);
 
 	float dt = timer2.Mark();
-	for (auto& b : boxes)
+	for (auto& d : drawables)
 	{
-		b->Update(dt);
-		b->Draw(wnd.Gfx());
+		d->Update(dt);
+		d->Draw(wnd.Gfx());
 	}
 	wnd.Gfx().EndFrame();
 }
