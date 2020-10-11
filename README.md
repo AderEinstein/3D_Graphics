@@ -7,7 +7,7 @@ Implemented a specialized interface which creates a window with mouse and keyboa
 
 Implemented a bindable system which manages the binding of components to the rendering pipeline to limit the binding of those components per draw calls and per model.
 
-Implemented z-buffering and a drawable system to render multiple 3D geometric shapes which are allowed to orbit around their center and move freely around the screen.
+Implemented z-buffering and a drawable system to render multiple 3D geometric shapes which are allowed to orbit around their center and move freely around the scene.
 
 # In progress:
 Camera object
