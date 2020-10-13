@@ -4,6 +4,7 @@
 #include <sdkddkver.h>
 
 // These #define switches prevent the inclusion of some unused WinAPI stuff when including <Windows.h> anywhere else.
+#ifndef FULL_WINAPI
 #define WIN32_LEAN_AND_MEAN
 #define NOGDICAPMASKS
 #define NOSYSMETRICS
@@ -21,7 +22,6 @@
 #define NONLS
 #define NOMEMMGR
 #define NOMETAFILE
-#define NOMINMAX
 #define NOOPENFILE
 #define NOSCROLL
 #define NOSERVICE
@@ -38,6 +38,8 @@
 #define NOPROXYSTUB
 #define NOIMAGE
 #define NOTAPE
+#endif
 
+#define NOMINMAX
 
 #include <Windows.h>

@@ -4,9 +4,8 @@ App::App()
 	:
 	wnd(800, 600, "AEinstein3D Graphics")
 {
-	Factory f(wnd.Gfx());
 	drawables.reserve(nDrawables);
-	std::generate_n(std::back_inserter(drawables), nDrawables, f);
+	std::generate_n(std::back_inserter(drawables), nDrawables, Factory{ wnd.Gfx() });
 
 	wnd.Gfx().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 0.75f, 0.5f, 40.0f));
 }
@@ -35,7 +34,7 @@ void App::DoFrame()
 	float dt = timer2.Mark();
 	for (auto& d : drawables)
 	{
-		d->Update(dt);
+		d->Update( wnd.kbd.KeyIsPressed(VK_SPACE)? 0.0f : dt );
 		d->Draw(wnd.Gfx());
 	}
 	wnd.Gfx().EndFrame();
