@@ -40,12 +40,12 @@ Pyramid::Pyramid(Graphics& gfx,
 		auto model = Cone::MakeTesselated<Vertex>(4);
 
 		// Set vertex colors for mesh
-		model.vertices[0].color = { 190, 151, 108 };
-		model.vertices[1].color = { 190, 151, 108 };
-		model.vertices[2].color = { 190, 151, 108 };
-		model.vertices[3].color = { 190, 151, 108 };
-		model.vertices[4].color = { 204, 160, 108 };
-		model.vertices[5].color = { 110, 85, 56 };
+		model.vertices[0].color = { 255,255,0 };
+		model.vertices[1].color = { 255,255,0 };
+		model.vertices[2].color = { 255,255,0 };
+		model.vertices[3].color = { 255,255,0 };
+		model.vertices[4].color = { 255,255,80 };
+		model.vertices[5].color = { 255,10,0 };
 
 		// Deform mesh linearly
 		model.Transform(dx::XMMatrixScaling(1.0f, 1.0f, 0.7f));
