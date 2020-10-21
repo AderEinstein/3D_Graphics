@@ -40,9 +40,9 @@ Sheet::Sheet(Graphics& gfx, std::mt19937& rng, std::uniform_real_distribution<fl
 
 		AddStaticBind(std::make_unique<Texture>(gfx, Surface::FromFile("Images\\Kakashi reads.jpg")));
 
-		AddStaticBind(std::make_unique<VertexBuffer>(gfx, model.vertices));
-
 		AddStaticBind(std::make_unique<Sampler>(gfx));
+
+		AddStaticBind(std::make_unique<VertexBuffer>(gfx, model.vertices));
 
 		auto pvs = std::make_unique<VertexShader>(gfx, L"TextureVS.cso");
 		auto pvsbc = pvs->GetBytecode();
