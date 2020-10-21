@@ -39,7 +39,7 @@ void App::DoFrame()
 	float dt = timer2.Mark();
 	for (auto& d : drawables)
 	{
-		d->Update(dt);
+		d->Update(wnd.kbd.KeyIsPressed(VK_SPACE) ? 0.0f : dt);
 		d->Draw(wnd.Gfx());
 	}
 	wnd.Gfx().EndFrame();
