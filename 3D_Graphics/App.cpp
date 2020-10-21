@@ -1,5 +1,7 @@
 #include "App.h"
 
+GDIPlusManager gdipm;
+
 App::App()
 	:
 	wnd(800, 600, "AEinstein3D Graphics")
@@ -7,6 +9,8 @@ App::App()
 	Factory f(wnd.Gfx());
 	drawables.reserve(nDrawables);
 	std::generate_n(std::back_inserter(drawables), nDrawables, f);
+
+	const auto s = Surface::FromFile("Images//Kakashi reads.jpg");
 
 	wnd.Gfx().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 0.75f, 0.5f, 40.0f));
 }
