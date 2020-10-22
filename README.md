@@ -9,14 +9,14 @@ Implemented a bindable system which manages the binding of components to the ren
 
 Implemented z-buffering and a drawable system to render multiple 3D geometric shapes which are allowed to orbit around their center and move freely around the scene.
 
+Implemented image loading and texture mapping.
+
 # In progress:
 Camera object
 
 ImGui
 
 Dynamic Lighting
-
-Texture Mapping
 
 Normal Mapping
 
