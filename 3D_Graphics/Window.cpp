@@ -1,6 +1,7 @@
 #include "Window.h"
 #include "WndExceptMacros.h"
 #include <sstream>
+#include "imgui/imgui_impl_win32.h"
 #include "resource.h"
 
 // Singleton:WindowClass Registration
@@ -81,6 +82,10 @@ Window::Window(int width, int height, const char* WndName)
 		throw WND_LAST_EXCEPT();
 	}
 
+	// ImGui Win32 Impl Initialization
+	ImGui_ImplWin32_Init(hWnd);
+
+	// Show newly created window
 	ShowWindow(hWnd, SW_SHOWDEFAULT);
 
 	pGfx = std::make_unique<Graphics>(hWnd);
@@ -88,6 +93,7 @@ Window::Window(int width, int height, const char* WndName)
 
 Window::~Window()
 {
+	ImGui_ImplWin32_Shutdown();
 	DestroyWindow(hWnd);
 }
 
@@ -120,8 +126,11 @@ LRESULT CALLBACK Window::handleMsgLink(HWND hWnd, UINT msg, WPARAM wParam, LPARA
 
 LRESULT Window::handleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept
 {
-
-	if (msg == WM_CLOSE)
+	if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
+	{
+		return true; // No need to check for the other window massages if the event came from an imgui window, so return immediately
+	}
+	else if (msg == WM_CLOSE)
 	{
 		PostQuitMessage(0);
 		return 0;  // Since we want to destroy the window using our window class destructor instead of using DefWindowProc, we return if we get a WM_CLOSE msg

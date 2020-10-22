@@ -5,6 +5,7 @@
 #include <d3dcompiler.h>
 #include "Window.h"
 #include <DirectXMath.h>
+#include "imgui/imgui_impl_dx11.h"
 
 #pragma comment(lib,"d3d11.lib")
 #pragma comment(lib,"D3DCompiler.lib")
@@ -32,9 +33,9 @@ Graphics::Graphics(HWND hWnd)
 	sd.Flags = 0;
 
 	UINT swapCreateFlags = 0u;
-#ifndef NDEBUG
-	swapCreateFlags |= D3D11_CREATE_DEVICE_DEBUG;
-#endif
+	#ifndef NDEBUG
+		swapCreateFlags |= D3D11_CREATE_DEVICE_DEBUG;
+	#endif
 
 	HRESULT hr; // For checking the result of d3d functions 
 
@@ -107,6 +108,9 @@ Graphics::Graphics(HWND hWnd)
 	vp.TopLeftX = 0;
 	vp.TopLeftY = 0;
 	pContext->RSSetViewports(1u, &vp);
+
+	// ImGui D3D Impl Initialization
+	ImGui_ImplDX11_Init(pDevice.Get(), pContext.Get());
 }
 
 void Graphics::ClearBuffer(float red, float green, float blue) noexcept
@@ -120,9 +124,9 @@ void Graphics::ClearBuffer(float red, float green, float blue) noexcept
 void Graphics::EndFrame()
 {
 	HRESULT hr;
-#ifndef NDEBUG
-	infoManager.Set();
-#endif
+	#ifndef NDEBUG
+		infoManager.Set();
+	#endif
 	if (FAILED(hr = pSwap->Present(1u, 0u)))
 	{
 		if (hr == DXGI_ERROR_DEVICE_REMOVED)

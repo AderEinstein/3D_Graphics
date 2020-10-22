@@ -12,6 +12,10 @@
 #include "Surface.h"
 #include "Sheet.h"
 #include "TexturedBox.h"
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_win32.h"
+#include "imgui/imgui_impl_dx11.h"
+#include "ImguiManager.h"
 
 class App
 {
@@ -23,6 +27,7 @@ public:
 private:
 	void DoFrame();
 
+	ImguiManager imgui;
 	Window wnd;
 	std::vector<std::unique_ptr<class Drawable>> drawables;
 	static constexpr size_t nDrawables = 180;
