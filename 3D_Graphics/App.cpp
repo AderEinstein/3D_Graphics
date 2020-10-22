@@ -33,8 +33,9 @@ int App::Go()
 
 void App::DoFrame()
 {
-	const float g = cos(timer1.Peek()) / 2.0f + 0.5f;
-	wnd.Gfx().ClearBuffer(0, g, 1.0f);
+	const float g = cos(timer1.Peek()) / 2.0f + 0.33f;
+	const float b = std::max( 0.13f, cos(timer1.Peek()) / 2.0f + 0.5f);
+	wnd.Gfx().ClearBuffer(0, g, b);
 
 	float dt = timer2.Mark();
 	for (auto& d : drawables)
