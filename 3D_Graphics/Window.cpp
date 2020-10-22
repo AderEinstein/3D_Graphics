@@ -88,7 +88,7 @@ Window::Window(int width, int height, const char* WndName)
 	// Show newly created window
 	ShowWindow(hWnd, SW_SHOWDEFAULT);
 
-	pGfx = std::make_unique<Graphics>(hWnd);
+	pGfx = std::make_unique<Graphics>(hWnd, width, height);
 }
 
 Window::~Window()
@@ -99,7 +99,7 @@ Window::~Window()
 
 LRESULT CALLBACK Window::handleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept
 {
-	// Use the "this" parameter that was passed in CreateWindow() to store window class pointer on WinAPI side
+	// Note: The "this" argument that was passed in CreateWindow() to store window class pointer on WinAPI side can be obtained from the lParam of incoming  messages
 	if (msg == WM_NCCREATE)
 	{
 		// Extract ptr to window class from creation data
@@ -280,7 +280,7 @@ const char* Window::NoGfxException::getType() const noexcept
 	return "Window Exception [No Graphics]";
 }
 
-void Window::setTitle(const std::string& title)
+void Window::SetTitle(const std::string& title)
 {
 	if (SetWindowText(hWnd, title.c_str()) == 0)
 	{

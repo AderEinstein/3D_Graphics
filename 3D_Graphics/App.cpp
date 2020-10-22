@@ -4,7 +4,7 @@ GDIPlusManager gdipm;
 
 App::App()
 	:
-	wnd(800, 600, "AEinstein3D Graphics")
+	wnd(1080, 720, "AEinstein3D Graphics")
 {
 	Factory f(wnd.Gfx());
 	drawables.reserve(nDrawables);

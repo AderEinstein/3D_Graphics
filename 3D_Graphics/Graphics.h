@@ -16,7 +16,7 @@ class Graphics
 
 public:
 	friend class Bindable;
-	Graphics(HWND hWnd);
+	Graphics(HWND hWnd, int windowWidth, int windowHeight);
 	~Graphics() = default;
 	Graphics(const Graphics&) = delete;
 	Graphics& operator=(const Graphics&) = delete;
@@ -27,7 +27,7 @@ public:
 	void ClearBuffer(float red, float green, float blue) noexcept;
 	void EndFrame();
 
-
+	//***************************************** Graphics Exceptions ******************************************* 
 	class Exception : public AderException
 	{
 		using AderException::AderException;
@@ -67,6 +67,7 @@ public:
 	private:
 		std::string info;
 	};
+	//*********************************************************************************************************
 
 private:
 	DirectX::XMMATRIX projection;

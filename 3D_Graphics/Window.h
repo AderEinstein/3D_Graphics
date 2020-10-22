@@ -14,10 +14,15 @@ public:
 	Window(const Window&) = delete;
 	Window& operator=(const Window&) = delete;
 	~Window();
-	void setTitle(const std::string& title);
-	static std::optional<int> ProcessMessages() noexcept;
+	
 	Graphics& Gfx();
+	void SetTitle(const std::string& title);
+	static std::optional<int> ProcessMessages() noexcept;
 
+	Keyboard kbd;
+	Mouse mouse;
+
+	//***************************************** Window Exceptions ********************************************* 
 	class Exception : public AderException
 	{
 		using AderException::AderException;
@@ -43,13 +48,12 @@ public:
 		using Exception::Exception;
 		const char* getType() const noexcept override;
 	};
-
-	Keyboard kbd;
-	Mouse mouse;
+	// ************************************************************************************************
 
 private:
 
-	class WindowClass // Singleton which will manage window class registration
+	// ********************** Singleton which manages window class registration ***********************
+	class WindowClass 
 	{
 	public:
 		static const char* getWndClassName() noexcept;
@@ -63,6 +67,7 @@ private:
 		HINSTANCE hInst;
 		static WindowClass wndClass;
 	};
+	//***********************************************************************************************
 
 	static LRESULT CALLBACK handleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
 	static LRESULT CALLBACK handleMsgLink(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
