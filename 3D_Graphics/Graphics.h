@@ -24,8 +24,11 @@ public:
 	void SetProjection(DirectX::FXMMATRIX proj) noexcept;
 	DirectX::XMMATRIX GetProjection() const noexcept;
 	void DrawIndexed(UINT count) noexcept(!IS_DEBUG);
-	void ClearBuffer(float red, float green, float blue) noexcept;
+	void BeginFrame(float red, float green, float blue) noexcept;
 	void EndFrame();
+	bool IsImguiEnabled() const noexcept;
+	void DisableImgui() noexcept;
+	void EnableImgui() noexcept;
 
 	//***************************************** Graphics Exceptions ******************************************* 
 	class Exception : public AderException
@@ -71,6 +74,7 @@ public:
 
 private:
 	DirectX::XMMATRIX projection;
+	bool imguiEnabled = true;
 	Microsoft::WRL::ComPtr<ID3D11Device> pDevice;
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> pContext;
 	Microsoft::WRL::ComPtr<IDXGISwapChain> pSwap;

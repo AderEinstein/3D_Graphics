@@ -35,7 +35,7 @@ void App::DoFrame()
 {
 	const float g = cos(timer1.Peek()) / 2.0f + 0.33f;
 	const float b = std::max( 0.13f, cos(timer1.Peek()) / 2.0f + 0.5f);
-	wnd.Gfx().ClearBuffer(0, g, b);
+	wnd.Gfx().BeginFrame(0, g, b);
 
 	float dt = timer2.Mark();
 	for (auto& d : drawables)
@@ -43,19 +43,22 @@ void App::DoFrame()
 		d->Update(wnd.kbd.KeyIsPressed(VK_SPACE) ? 0.0f : dt);
 		d->Draw(wnd.Gfx());
 	}
+	
+	// Hide ImGui when space key is beign pressed
+	if (wnd.kbd.KeyIsPressed(VK_SPACE))
+	{
+		wnd.Gfx().DisableImgui();
+	}
+	else
+	{
+		wnd.Gfx().EnableImgui();
+	}
 
-	// Test ImGui
-	ImGui_ImplDX11_NewFrame();
-	ImGui_ImplWin32_NewFrame();
-	ImGui::NewFrame();
-
-	static bool show_demo_window = true;
+	// ImGui updates &show_demo_window to false when ImGui is not rendered for a given frame (see Graphics::EndFrame) i.e for every frame where the space key is down
 	if (show_demo_window)
 	{
 		ImGui::ShowDemoWindow(&show_demo_window);
 	}
-	ImGui::Render();
-	ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
 	// Present frame buffer
 	wnd.Gfx().EndFrame();

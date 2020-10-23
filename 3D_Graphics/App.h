@@ -12,10 +12,8 @@
 #include "Surface.h"
 #include "Sheet.h"
 #include "TexturedBox.h"
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_win32.h"
-#include "imgui/imgui_impl_dx11.h"
 #include "ImguiManager.h"
+#include "imgui/imgui.h"
 
 class App
 {
@@ -33,6 +31,7 @@ private:
 	static constexpr size_t nDrawables = 180;
 	Timer timer1;
 	Timer timer2;
+	bool show_demo_window = true;
 
 	class Factory
 	{

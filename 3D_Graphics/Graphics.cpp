@@ -6,6 +6,7 @@
 #include "Window.h"
 #include <DirectXMath.h>
 #include "imgui/imgui_impl_dx11.h"
+#include "imgui/imgui_impl_win32.h"
 
 #pragma comment(lib,"d3d11.lib")
 #pragma comment(lib,"D3DCompiler.lib")
@@ -113,20 +114,36 @@ Graphics::Graphics(HWND hWnd, int windowWidth, int windowHeight)
 	ImGui_ImplDX11_Init(pDevice.Get(), pContext.Get());
 }
 
-void Graphics::ClearBuffer(float red, float green, float blue) noexcept
+void Graphics::BeginFrame(float red, float green, float blue) noexcept
 {
 	const float color[] = { red,green,blue,1.0f };
 	pContext->ClearRenderTargetView(pTarget.Get(), color);
 	pContext->ClearDepthStencilView(pDSV.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
+
+	// Initialize ImGui frame
+	if (imguiEnabled)
+	{
+		ImGui_ImplDX11_NewFrame();
+		ImGui_ImplWin32_NewFrame();
+		ImGui::NewFrame();
+	}
 }
 
 
 void Graphics::EndFrame()
-{
+{	
 	HRESULT hr;
 	#ifndef NDEBUG
 		infoManager.Set();
 	#endif
+
+	// Render ImGui frame
+	if( imguiEnabled )
+	{
+		ImGui::Render();
+		ImGui_ImplDX11_RenderDrawData( ImGui::GetDrawData() );
+	}
+
 	if (FAILED(hr = pSwap->Present(1u, 0u)))
 	{
 		if (hr == DXGI_ERROR_DEVICE_REMOVED)
@@ -140,6 +157,20 @@ void Graphics::EndFrame()
 	}
 }
 
+bool Graphics::IsImguiEnabled() const noexcept
+{
+	return imguiEnabled;
+}
+
+void Graphics::EnableImgui() noexcept
+{
+	imguiEnabled = true;
+}
+
+void Graphics::DisableImgui() noexcept
+{
+	imguiEnabled = false;
+}
 
 // Graphics Exception things
 Graphics::HrException::HrException(int line, const char* file, HRESULT hr, std::vector<std::string> infoMsgs) noexcept
