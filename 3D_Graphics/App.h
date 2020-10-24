@@ -31,7 +31,7 @@ private:
 	static constexpr size_t nDrawables = 180;
 	Timer timer1;
 	Timer timer2;
-	bool show_demo_window = true;
+	float speed_factor = 1.0f;
 
 	class Factory
 	{

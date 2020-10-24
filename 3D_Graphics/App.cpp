@@ -37,7 +37,7 @@ void App::DoFrame()
 	const float b = std::max( 0.13f, cos(timer1.Peek()) / 2.0f + 0.5f);
 	wnd.Gfx().BeginFrame(0, g, b);
 
-	float dt = timer2.Mark();
+	float dt = timer2.Mark() * speed_factor;
 	for (auto& d : drawables)
 	{
 		d->Update(wnd.kbd.KeyIsPressed(VK_SPACE) ? 0.0f : dt);
@@ -54,11 +54,16 @@ void App::DoFrame()
 		wnd.Gfx().EnableImgui();
 	}
 
-	// ImGui updates &show_demo_window to false when ImGui is not rendered for a given frame (see Graphics::EndFrame) i.e for every frame where the space key is down
-	if (show_demo_window)
+	static char buffer[1024];
+
+	// Imgui window to control simulation speed
+	if (ImGui::Begin("Simulation Speed"))
 	{
-		ImGui::ShowDemoWindow(&show_demo_window);
+		ImGui::SliderFloat("Speed Factor", &speed_factor, 0.0f, 4.0f);
+		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		ImGui::InputText("Butts", buffer, sizeof(buffer));
 	}
+	ImGui::End();
 
 	// Present frame buffer
 	wnd.Gfx().EndFrame();
