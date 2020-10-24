@@ -21,6 +21,8 @@ public:
 	Graphics(const Graphics&) = delete;
 	Graphics& operator=(const Graphics&) = delete;
 
+	void SetCamera(DirectX::FXMMATRIX cam) noexcept;
+	DirectX::XMMATRIX GetCamera() const noexcept;
 	void SetProjection(DirectX::FXMMATRIX proj) noexcept;
 	DirectX::XMMATRIX GetProjection() const noexcept;
 	void DrawIndexed(UINT count) noexcept(!IS_DEBUG);
@@ -73,6 +75,7 @@ public:
 	//*********************************************************************************************************
 
 private:
+	DirectX::XMMATRIX camera;
 	DirectX::XMMATRIX projection;
 	bool imguiEnabled = true;
 	Microsoft::WRL::ComPtr<ID3D11Device> pDevice;
