@@ -126,6 +126,7 @@ LRESULT CALLBACK Window::handleMsgLink(HWND hWnd, UINT msg, WPARAM wParam, LPARA
 
 LRESULT Window::handleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept
 {
+	const auto imio = ImGui::GetIO();
 	if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
 	{
 		return true; // No need to check for the other window massages if the event came from an imgui window, so return immediately
@@ -142,7 +143,9 @@ LRESULT Window::handleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 	///////////////////////////////////////////////////KEYBOARD MESSAGES////////////////////////////////////////////////////////////////
 	else if (msg == WM_KEYDOWN || msg == WM_SYSKEYDOWN) // also handle syskey msgs to track ALT key(VK_MENU) and F10
 	{
-		if (!(lParam & 0x40000000) || kbd.AutorepeatIsEnabled()) // Filter autorepeat
+		// Hide this keyboard message frow main window if imgui's i/o wants to capture
+		if (imio.WantCaptureKeyboard) {}
+		else if (!(lParam & 0x40000000) || kbd.AutorepeatIsEnabled()) // Filter autorepeat
 		{
 			kbd.OnKeyPressed(static_cast<unsigned char>(wParam));
 		}
@@ -159,8 +162,12 @@ LRESULT Window::handleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 	/////////////////////////////////////////////////////MOUSE MESSAGES//////////////////////////////////////////////////////////////////
 	else if (msg == WM_MOUSEMOVE)
 	{
-		const POINTS pt = MAKEPOINTS(lParam);
-		mouse.OnMouseMove(pt.x, pt.y);
+		// Hide this keyboard message frow main window if imgui's i/o wants to capture
+		if (!imio.WantCaptureKeyboard)
+		{
+			const POINTS pt = MAKEPOINTS(lParam);
+			mouse.OnMouseMove(pt.x, pt.y);
+		}
 	}
 	else if (msg == WM_LBUTTONDOWN)
 	{
