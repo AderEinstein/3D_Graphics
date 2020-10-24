@@ -14,6 +14,7 @@
 #include "TexturedBox.h"
 #include "ImguiManager.h"
 #include "imgui/imgui.h"
+#include "Camera.h"
 
 class App
 {
@@ -32,6 +33,7 @@ private:
 	Timer timer1;
 	Timer timer2;
 	float speed_factor = 1.0f;
+	Camera cam;
 
 	class Factory
 	{

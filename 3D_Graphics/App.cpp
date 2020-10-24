@@ -36,6 +36,8 @@ void App::DoFrame()
 	const float b = std::max( 0.13f, cos(timer1.Peek()) / 2.0f + 0.5f);
 	wnd.Gfx().BeginFrame(0, g, b);
 
+	wnd.Gfx().SetCamera(cam.GetMatrix());
+
 	float dt = timer2.Mark() * speed_factor;
 	for (auto& d : drawables)
 	{
@@ -51,6 +53,9 @@ void App::DoFrame()
 		ImGui::Text("Status: %s", wnd.kbd.KeyIsPressed(VK_SPACE) ? "PAUSED" : "RUNNING");
 	}
 	ImGui::End();
+
+	// Imgui window to control camera
+	cam.SpawnControlWindow();
 
 	// Present frame buffer
 	wnd.Gfx().EndFrame();
