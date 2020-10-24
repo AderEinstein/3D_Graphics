@@ -126,7 +126,7 @@ LRESULT CALLBACK Window::handleMsgLink(HWND hWnd, UINT msg, WPARAM wParam, LPARA
 
 LRESULT Window::handleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept
 {
-	const auto imio = ImGui::GetIO();
+	const auto& imio = ImGui::GetIO();
 	if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
 	{
 		return true; // No need to check for the other window massages if the event came from an imgui window, so return immediately

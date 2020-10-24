@@ -17,7 +17,7 @@ class Graphics
 public:
 	friend class Bindable;
 	Graphics(HWND hWnd, int windowWidth, int windowHeight);
-	~Graphics() = default;
+	~Graphics();
 	Graphics(const Graphics&) = delete;
 	Graphics& operator=(const Graphics&) = delete;
 

@@ -306,3 +306,7 @@ DirectX::XMMATRIX Graphics::GetProjection() const noexcept
 	return projection;
 }
 
+Graphics::~Graphics()
+{
+	ImGui_ImplDX11_Shutdown();
+}
