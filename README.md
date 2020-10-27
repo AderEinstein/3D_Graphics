@@ -11,13 +11,14 @@ Implemented z-buffering and a drawable system to render multiple 3D geometric sh
 
 Implemented image loading and texture mapping.
 
-# In progress:
-Camera object
+Interfaced with ImGui Library to spawn gui windows that allow the customization of various components of the scene at runtime.
 
-ImGui
+Implemented a Camera object to navigate the scene.
+
+# In progress:
 
 Dynamic Lighting
 
-Normal Mapping
-
 Mesh Loading
+
+Normal Mapping
