@@ -33,8 +33,10 @@ int App::Go()
 
 void App::DoFrame()
 {
-	const float g = cos(timer1.Peek()) / 2.0f + 0.4f;
-	const float b = std::max( 0.13f, cos(timer1.Peek()) / 2.0f + 0.6f);
+	//Sky blue background animation colors
+	const float g = cos(0.5f*timer1.Peek()) / 2.0f + 0.35f;
+	const float b = std::max( 0.08f, cos(0.5f*timer1.Peek()) / 2.0f + 0.5f);
+	
 	wnd.Gfx().BeginFrame(0, g, b);
 
 	light.Update(wnd.Gfx());

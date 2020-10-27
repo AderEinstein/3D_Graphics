@@ -25,6 +25,7 @@ void PointLight::SpawnControlWindow() noexcept
 void PointLight::Update(Graphics& gfx) const noexcept(!IS_DEBUG)
 {
 	cbuf.Update(gfx, PointLightCBuf{ pos });
+	cbuf.Bind(gfx);
 }
 
 void PointLight::Draw(Graphics& gfx) const noexcept(!IS_DEBUG)
