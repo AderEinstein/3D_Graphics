@@ -4,7 +4,8 @@ GDIPlusManager gdipm;
 
 App::App()
 	:
-	wnd(1080, 720, "AEinstein3D Graphics")
+	wnd(1080, 720, "AEinstein3D Graphics"),
+	light(wnd.Gfx())
 {
 	Factory f(wnd.Gfx());
 	drawables.reserve(nDrawables);
@@ -32,10 +33,11 @@ int App::Go()
 
 void App::DoFrame()
 {
-	const float g = cos(timer1.Peek()) / 2.0f + 0.33f;
-	const float b = std::max( 0.13f, cos(timer1.Peek()) / 2.0f + 0.5f);
+	const float g = cos(timer1.Peek()) / 2.0f + 0.4f;
+	const float b = std::max( 0.13f, cos(timer1.Peek()) / 2.0f + 0.6f);
 	wnd.Gfx().BeginFrame(0, g, b);
 
+	light.Update(wnd.Gfx());
 	wnd.Gfx().SetCamera(cam.GetMatrix());
 
 	float dt = timer2.Mark() * speed_factor;
@@ -44,6 +46,7 @@ void App::DoFrame()
 		d->Update(wnd.kbd.KeyIsPressed(VK_SPACE) ? 0.0f : dt);
 		d->Draw(wnd.Gfx());
 	}
+	light.Draw(wnd.Gfx());
 	
 	// Imgui window to control simulation speed
 	if (ImGui::Begin("Simulation Speed"))
@@ -54,8 +57,9 @@ void App::DoFrame()
 	}
 	ImGui::End();
 
-	// Imgui window to control camera
+	// Imgui windows to control camera and light
 	cam.SpawnControlWindow();
+	light.SpawnControlWindow();
 
 	// Present frame buffer
 	wnd.Gfx().EndFrame();

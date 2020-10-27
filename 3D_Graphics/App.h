@@ -4,7 +4,6 @@
 #include "Timer.h"
 #include "Box.h"
 #include "Pyramid.h"
-#include "Melon.h"
 #include "AderMath.h"
 #include "Algorithm"
 #include <memory>
@@ -14,6 +13,7 @@
 #include "TexturedBox.h"
 #include "ImguiManager.h"
 #include "imgui/imgui.h"
+#include "PointLight.h"
 #include "Camera.h"
 
 class App
@@ -28,12 +28,13 @@ private:
 
 	ImguiManager imgui;
 	Window wnd;
-	std::vector<std::unique_ptr<class Drawable>> drawables;
-	static constexpr size_t nDrawables = 180;
+	PointLight light;
+	Camera cam;
 	Timer timer1;
 	Timer timer2;
+	std::vector<std::unique_ptr<class Drawable>> drawables;
+	static constexpr size_t nDrawables = 180;
 	float speed_factor = 1.0f;
-	Camera cam;
 
 	class Factory
 	{
@@ -44,7 +45,8 @@ private:
 		{}
 		std::unique_ptr<Drawable> operator()()
 		{
-			switch (typedist(rng))
+
+			/*switch (typedist(rng))
 			{
 			case 0:
 				return std::make_unique<Pyramid>(
@@ -61,12 +63,12 @@ private:
 					gfx, rng, adist, ddist,
 					odist, rdist
 					);
-			case 3:
+			case 3:*/
 				return std::make_unique<Box>(
 					gfx, rng, adist, ddist,
 					odist, rdist, bdist
 					);
-			case 4:
+			/*case 4:
 				return std::make_unique<Melon>(
 					gfx, rng, adist, ddist,
 					odist, rdist, longdist, latdist
@@ -74,7 +76,7 @@ private:
 			default:
 				assert(false && "Bad drawable type in factory");
 				return {};
-			}
+			}*/
 		}
 	private:
 		Graphics& gfx;
@@ -84,8 +86,8 @@ private:
 		std::uniform_real_distribution<float> odist{ 0.0f,PI * 0.08f };
 		std::uniform_real_distribution<float> rdist{ 6.0f,20.0f };
 		std::uniform_real_distribution<float> bdist{ 0.4f,3.0f };
-		std::uniform_int_distribution<int> latdist{ 5,20 };
+		/*std::uniform_int_distribution<int> latdist{ 5,20 };
 		std::uniform_int_distribution<int> longdist{ 10,40 };
-		std::uniform_int_distribution<int> typedist{ 0,4 };
+		std::uniform_int_distribution<int> typedist{ 0,4 };*/
 	};
 };
