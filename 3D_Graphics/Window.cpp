@@ -144,86 +144,124 @@ LRESULT Window::handleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noe
 	else if (msg == WM_KEYDOWN || msg == WM_SYSKEYDOWN) // also handle syskey msgs to track ALT key(VK_MENU) and F10
 	{
 		// Hide this keyboard message frow main window if imgui's i/o wants to capture
-		if (imio.WantCaptureKeyboard) {}
-		else if (!(lParam & 0x40000000) || kbd.AutorepeatIsEnabled()) // Filter autorepeat
+		if (!imio.WantCaptureKeyboard)
 		{
-			kbd.OnKeyPressed(static_cast<unsigned char>(wParam));
+			if (!(lParam & 0x40000000) || kbd.AutorepeatIsEnabled()) // Filter autorepeat
+			{
+				kbd.OnKeyPressed(static_cast<unsigned char>(wParam));
+			}
 		}
 	}
 	else if (msg == WM_KEYUP || msg == WM_SYSKEYUP)
 	{
-		kbd.OnKeyReleased(static_cast<unsigned char>(wParam));
+		// Hide this keyboard message frow main window if imgui's i/o wants to capture
+		if (!imio.WantCaptureKeyboard)
+		{
+			kbd.OnKeyReleased(static_cast<unsigned char>(wParam));
+		}
 	}
 	else if (msg == WM_CHAR)
 	{
-		kbd.OnChar(static_cast<unsigned char>(wParam));
+		// Hide this keyboard message frow main window if imgui's i/o wants to capture
+		if (!imio.WantCaptureKeyboard)
+		{
+			kbd.OnChar(static_cast<unsigned char>(wParam));
+		}
 	}
 
 	/////////////////////////////////////////////////////MOUSE MESSAGES//////////////////////////////////////////////////////////////////
 	else if (msg == WM_MOUSEMOVE)
 	{
-		// Hide this keyboard message frow main window if imgui's i/o wants to capture
+		// Hide this mouse message frow main window if imgui's i/o wants to capture
 		if (!imio.WantCaptureKeyboard)
 		{
-			const POINTS pt = MAKEPOINTS(lParam);
-			mouse.OnMouseMove(pt.x, pt.y);
+			const POINTS point = MAKEPOINTS(lParam);
+			// In client region : log move, and log enter + capture mouse (if not previously in window)
+			if (point.x >= 0 && point.x < width && point.y >= 0 && point.y < height)
+			{
+				mouse.OnMouseMove(point.x, point.y);
+				if (!mouse.IsInWindow())
+				{
+					SetCapture(hWnd);
+					mouse.OnMouseEnter();
+				}
+			}
+			// Out of client : log move, maintain capture if button down
+			else
+			{
+				if (wParam & (MK_LBUTTON | MK_RBUTTON))
+				{
+					mouse.OnMouseMove(point.x, point.y);
+				}
+				// Button up: release capture / log event for leaving
+				else
+				{
+					ReleaseCapture();
+					mouse.OnMouseLeave();
+				}
+			}
 		}
 	}
 	else if (msg == WM_LBUTTONDOWN)
 	{
-		const POINTS point = MAKEPOINTS(lParam);
-		// In client region : log move, and log enter + capture mouse (if not previously in window)
-		if (point.x >= 0 && point.x < width && point.y >= 0 && point.y < height)
+		SetForegroundWindow(hWnd);
+		// Hide this mouse message frow main window if imgui's i/o wants to capture
+		if (!imio.WantCaptureKeyboard)
 		{
-			mouse.OnMouseMove(point.x, point.y);
-			if (!mouse.IsInWindow())
-			{
-				SetCapture(hWnd);
-				mouse.OnMouseEnter();
-			}
+			const POINTS pt = MAKEPOINTS(lParam);
+			mouse.OnLeftPressed(pt.x, pt.y);
 		}
-		// Out of client : log move, maintain capture if button down
-		else
+	}
+	else if (msg == WM_RBUTTONDOWN)
+	{
+		// Hide this mouse message frow main window if imgui's i/o wants to capture
+		if (!imio.WantCaptureKeyboard)
 		{
-			if (wParam & (MK_LBUTTON | MK_RBUTTON))
-			{
-				mouse.OnMouseMove(point.x, point.y);
-			}
-			// Button up: release capture / log event for leaving
-			else
+			const POINTS point = MAKEPOINTS(lParam);
+			mouse.OnRightPressed(point.x, point.y);
+		}
+	}
+	else if (msg == WM_LBUTTONUP)
+	{
+		// Hide this mouse message frow main window if imgui's i/o wants to capture
+		if (!imio.WantCaptureKeyboard)
+		{
+			const POINTS point = MAKEPOINTS(lParam);
+			mouse.OnLeftReleased(point.x, point.y);
+
+			// Release mouse when it goes outside of the window
+			if (point.x < 0 || point.x >= width || point.y < 0 || point.y >= height)
 			{
 				ReleaseCapture();
 				mouse.OnMouseLeave();
 			}
 		}
 	}
-	else if (msg == WM_RBUTTONDOWN)
-	{
-		const POINTS point = MAKEPOINTS(lParam);
-		mouse.OnRightPressed(point.x, point.y);
-	}
-	else if (msg == WM_LBUTTONUP)
-	{
-		const POINTS point = MAKEPOINTS(lParam);
-		mouse.OnLeftReleased(point.x, point.y);
-
-		// Release mouse when it goes outside of the window
-		if (point.x < 0 || point.x >= width || point.y < 0 || point.y >= height)
-		{
-			ReleaseCapture();
-			mouse.OnMouseLeave();
-		}
-	}
 	else if (msg == WM_RBUTTONUP)
 	{
-		const POINTS point = MAKEPOINTS(lParam);
-		mouse.OnRightReleased(point.x, point.y);
+		// Hide this mouse message frow main window if imgui's i/o wants to capture
+		if (!imio.WantCaptureKeyboard)
+		{
+			const POINTS point = MAKEPOINTS(lParam);
+			mouse.OnRightReleased(point.x, point.y);
+
+			//Release mouse if it goes beyond the window
+			if (point.x < 0 || point.x >= width || point.y < 0 || point.y >= height)
+			{
+				ReleaseCapture();
+				mouse.OnMouseLeave();
+			}
+		}
 	}
 	else if (msg == WM_MOUSEWHEEL)
 	{
-		const POINTS point = MAKEPOINTS(lParam);
-		const int delta = GET_WHEEL_DELTA_WPARAM(wParam);
-		mouse.OnWheelDelta(point.x, point.y, delta);
+		// Hide this mouse message frow main window if imgui's i/o wants to capture
+		if (!imio.WantCaptureKeyboard)
+		{
+			const POINTS point = MAKEPOINTS(lParam);
+			const int delta = GET_WHEEL_DELTA_WPARAM(wParam);
+			mouse.OnWheelDelta(point.x, point.y, delta);
+		}
 	}
 
 	return DefWindowProc(hWnd, msg, wParam, lParam); // The default window procedure will handle WM_QUIT msg

@@ -80,6 +80,7 @@ private:
 		}
 	private:
 		Graphics& gfx;
+		GDIPlusManager gdipm;
 		std::mt19937 rng{ std::random_device{}() };
 		std::uniform_real_distribution<float> adist{ 0.0f,PI * 2.0f };
 		std::uniform_real_distribution<float> ddist{ 0.0f,PI * 0.5f };

@@ -1,9 +1,11 @@
 #include "PointLight.h"
 
-PointLight::PointLight(Graphics& gfx, float radius)
+PointLight::PointLight(Graphics& gfx, int windowWidth, int windowHeight, float radius)
 	:
 	mesh(gfx, radius),
-	cbuf(gfx)
+	cbuf(gfx),
+	windowWidth(windowWidth),
+	windowHeight(windowWidth)
 {}
 
 void PointLight::SpawnControlWindow() noexcept
@@ -36,14 +38,21 @@ void PointLight::Update(Window& wnd) const noexcept(!IS_DEBUG)
 			pos.z -= 1.0f;
 		}
 	}
+	if (wnd.mouse.LeftIsPressed()) 
+	{
+		float offsetY = 6.5f;	   // mouse offset to point light center
+		float cameraR = 20.0f;
+		pos.x = ((float)wnd.mouse.GetPosX() / (float(windowWidth) / 2) - 1.0f) * (cameraR + pos.z);
+		pos.y = (-(float)wnd.mouse.GetPosY() / (float(windowHeight) / 2) + 1.0f) * (cameraR + pos.z) - (offsetY + pos.z * 0.33);
+	}
 
-	cbuf.Update(wnd.Gfx(), PointLightCBuf{ pos });
-	cbuf.Bind(wnd.Gfx());
+	mesh.SetPos(pos);							   // Update mesh/model transform
+	cbuf.Update(wnd.Gfx(), PointLightCBuf{ pos }); // Update light position constant buffer 
+	cbuf.Bind(wnd.Gfx());						   // Bind pixel shader constant buffer slot with light position constant bufer 
 }
 
 void PointLight::Draw(Graphics& gfx) const noexcept(!IS_DEBUG)
 {
-	mesh.SetPos(pos);
 	mesh.Draw(gfx);
 }
 

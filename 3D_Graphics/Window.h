@@ -6,6 +6,7 @@
 #include "Mouse.h"
 #include <optional>
 #include <memory>
+#include "PointLight.h"
 
 class Window
 {
@@ -15,9 +16,9 @@ public:
 	Window& operator=(const Window&) = delete;
 	~Window();
 	
-	Graphics& Gfx();
 	void SetTitle(const std::string& title);
 	static std::optional<int> ProcessMessages() noexcept;
+	Graphics& Gfx();
 
 	Keyboard kbd;
 	Mouse mouse;

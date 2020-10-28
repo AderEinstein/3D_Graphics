@@ -1,11 +1,12 @@
 #include "App.h"
 
-GDIPlusManager gdipm;
+constexpr int WINDOW_WIDTH = 1080;
+constexpr int WINDOW_HEIGHT = 720;
 
 App::App()
 	:
-	wnd(1080, 720, "AEinstein3D Graphics"),
-	light(wnd.Gfx())
+	wnd( WINDOW_WIDTH, WINDOW_HEIGHT, "AEinstein3D Graphics" ),
+	light(wnd.Gfx(), WINDOW_WIDTH, WINDOW_HEIGHT)
 {
 	Factory f(wnd.Gfx());
 	drawables.reserve(nDrawables);
@@ -39,8 +40,8 @@ void App::DoFrame()
 	
 	wnd.Gfx().BeginFrame(0, g, b);
 
-	light.Update(wnd);
 	wnd.Gfx().SetCamera(cam.GetMatrix());
+	light.Update(wnd);
 
 	float dt = timer2.Mark() * speed_factor;
 	for (auto& d : drawables)

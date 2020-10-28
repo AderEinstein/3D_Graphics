@@ -15,10 +15,12 @@ private:
 	};
 	mutable PixelConstantBuffer<PointLightCBuf> cbuf;
 	mutable SolidSphere mesh;
-	mutable DirectX::XMFLOAT3 pos = { 0.0f,0.0f,0.0f };;
+	mutable DirectX::XMFLOAT3 pos = { 0.0f,0.0f,0.0f };
+	const int windowWidth;
+	const int windowHeight;
 
 public:
-	PointLight(Graphics& gfx, float radius = 0.5);
+	PointLight(Graphics& gfx, int windowWidth, int windowHeight, float radius = 0.5);
 	void Update(Window& wnd) const noexcept(!IS_DEBUG);
 	void Draw(Graphics& gfx) const noexcept(!IS_DEBUG);
 	void SpawnControlWindow() noexcept;
