@@ -32,7 +32,7 @@ public:
 			y(parent.y)
 		{
 		}
-		
+	
 		Type GetType() const noexcept
 		{
 			return type;
@@ -77,7 +77,7 @@ public:
 	bool LeftIsPressed() const noexcept;
 	bool RightIsPressed() const noexcept;
 	bool IsInWindow() const noexcept;
-	std::optional<Mouse::Event> Read() noexcept;
+	Mouse::Event Read() noexcept;
 	bool IsEmpty() const noexcept
 	{
 		return buffer.empty();

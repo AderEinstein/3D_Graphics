@@ -39,7 +39,7 @@ void App::DoFrame()
 	
 	wnd.Gfx().BeginFrame(0, g, b);
 
-	light.Update(wnd.Gfx());
+	light.Update(wnd);
 	wnd.Gfx().SetCamera(cam.GetMatrix());
 
 	float dt = timer2.Mark() * speed_factor;

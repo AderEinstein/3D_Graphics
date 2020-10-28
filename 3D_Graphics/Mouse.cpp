@@ -26,15 +26,11 @@ bool Mouse::RightIsPressed() const noexcept
 	return rightIsPressed;
 }
 
-std::optional<Mouse::Event> Mouse::Read() noexcept
+Mouse::Event Mouse::Read() noexcept
 {
-	if (buffer.size() > 0u)
-	{
-		Mouse::Event e = buffer.front();
-		buffer.pop();
-		return e;
-	}
-	return {};
+	Mouse::Event e = buffer.front();
+	buffer.pop();
+	return e;
 }
 
 bool Mouse::IsInWindow() const noexcept
@@ -121,12 +117,12 @@ void Mouse::OnWheelDelta(int x, int y, int delta) noexcept
 	while (wheelDeltaCarry >= WHEEL_DELTA)
 	{
 		wheelDeltaCarry -= WHEEL_DELTA;
-		OnWheelUp(x, y);
+		OnWheelDown(x, y);
 	}
 	while (wheelDeltaCarry <= -WHEEL_DELTA)
 	{
 		wheelDeltaCarry += WHEEL_DELTA;
-		OnWheelDown(x, y);
+		OnWheelUp(x, y);
 	}
 }
 

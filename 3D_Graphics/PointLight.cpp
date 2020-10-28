@@ -22,10 +22,23 @@ void PointLight::SpawnControlWindow() noexcept
 	ImGui::End();
 }
 
-void PointLight::Update(Graphics& gfx) const noexcept(!IS_DEBUG)
+void PointLight::Update(Window& wnd) const noexcept(!IS_DEBUG)
 {
-	cbuf.Update(gfx, PointLightCBuf{ pos });
-	cbuf.Bind(gfx);
+	while (!wnd.mouse.IsEmpty())
+	{
+		const Mouse::Event e = (const Mouse::Event)wnd.mouse.Read();
+		if (e.GetType() == Mouse::Event::Type::WheelUp)
+		{
+			pos.z += 1.0f;
+		}
+		else if (e.GetType() == Mouse::Event::Type::WheelDown)
+		{
+			pos.z -= 1.0f;
+		}
+	}
+
+	cbuf.Update(wnd.Gfx(), PointLightCBuf{ pos });
+	cbuf.Bind(wnd.Gfx());
 }
 
 void PointLight::Draw(Graphics& gfx) const noexcept(!IS_DEBUG)
