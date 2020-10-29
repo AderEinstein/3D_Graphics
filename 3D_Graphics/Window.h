@@ -6,7 +6,6 @@
 #include "Mouse.h"
 #include <optional>
 #include <memory>
-#include "PointLight.h"
 
 class Window
 {
