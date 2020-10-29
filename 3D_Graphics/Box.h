@@ -26,6 +26,7 @@ private:
 
 public:
 	Box(Graphics& gfx, std::mt19937& rng,
+		DirectX::XMFLOAT3 material,
 		std::uniform_real_distribution<float>& adist,
 		std::uniform_real_distribution<float>& ddist,
 		std::uniform_real_distribution<float>& odist,

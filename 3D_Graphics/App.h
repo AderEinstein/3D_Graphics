@@ -64,8 +64,9 @@ private:
 					odist, rdist
 					);
 			case 3:*/
+				const DirectX::XMFLOAT3 material = { cdist(rng), cdist(rng), cdist(rng) };
 				return std::make_unique<Box>(
-					gfx, rng, adist, ddist,
+					gfx, rng, material, adist, ddist,
 					odist, rdist, bdist
 					);
 			/*case 4:
@@ -82,6 +83,7 @@ private:
 		Graphics& gfx;
 		GDIPlusManager gdipm;
 		std::mt19937 rng{ std::random_device{}() };
+		std::uniform_real_distribution<float> cdist{ 0.0f, 1.0f };
 		std::uniform_real_distribution<float> adist{ 0.0f,PI * 2.0f };
 		std::uniform_real_distribution<float> ddist{ 0.0f,PI * 0.5f };
 		std::uniform_real_distribution<float> odist{ 0.0f,PI * 0.08f };

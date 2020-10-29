@@ -15,6 +15,6 @@ private:
 	const Drawable& parent;
 
 public:
-	TransformCBuffer(Graphics& gfx, const Drawable& parent);
+	TransformCBuffer(Graphics& gfx, const Drawable& parent, UINT slot = 0);
 	void Bind(Graphics& gfx) noexcept override;
 };

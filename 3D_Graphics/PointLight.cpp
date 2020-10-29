@@ -15,7 +15,6 @@ void PointLight::SpawnControlWindow() noexcept
 	if (ImGui::Begin("Light"))
 	{
 		ImGui::Text("Intensity/Color");
-		ImGui::ColorEdit3("Material", &cbData.materialColor.x);
 		ImGui::ColorEdit3("Diffuse Color", &cbData.diffuseColor.x);
 		ImGui::ColorEdit3("Ambient", &cbData.ambient.x);
 		ImGui::SliderFloat("Intensity", &cbData.diffuseIntensity, 0.01f, 2.0f, "%.2f", 2);
@@ -76,7 +75,6 @@ void PointLight::Reset() noexcept
 		{ 1.0f,1.0f,1.0f },
 		{ 0.05f,0.05f,0.05f },
 		{ 0.0f,0.0f,0.0f },
-		{ 0.9f,0.5f,0.2f },
 		1.0f,
 		0.027f,
 		0.0028f,

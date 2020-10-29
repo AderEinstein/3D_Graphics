@@ -6,7 +6,7 @@
 
 namespace dx = DirectX;
 
-Box::Box(Graphics& gfx, std::mt19937& rng, std::uniform_real_distribution<float>& adist, std::uniform_real_distribution<float>& ddist, std::uniform_real_distribution<float>& odist, std::uniform_real_distribution<float>& rdist, std::uniform_real_distribution<float>& bdist)
+Box::Box(Graphics& gfx, std::mt19937& rng, DirectX::XMFLOAT3 material, std::uniform_real_distribution<float>& adist, std::uniform_real_distribution<float>& ddist, std::uniform_real_distribution<float>& odist, std::uniform_real_distribution<float>& rdist, std::uniform_real_distribution<float>& bdist)
 	:
 	r(rdist(rng)),
 	droll(ddist(rng)),
@@ -54,6 +54,14 @@ Box::Box(Graphics& gfx, std::mt19937& rng, std::uniform_real_distribution<float>
 	}
 
 	AddBind(std::make_unique<TransformCBuffer>(gfx, *this));
+
+	struct PSMaterialConstant
+	{
+		dx::XMFLOAT3 color;
+		float padding;
+	};
+	PSMaterialConstant colorConst{ material };
+	AddBind(std::make_unique<PixelConstantBuffer<PSMaterialConstant>>(gfx, colorConst, 1u));
 
 	// Model deformation transform (per instance, not stored as bind)
 	dx::XMStoreFloat3x3(
