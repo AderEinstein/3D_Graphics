@@ -5,17 +5,24 @@
 #include "imgui/imgui.h"
 #include "Window.h"
 
+namespace dx = DirectX;
+
 class PointLight
 {
 private:
 	struct PointLightCBuf
-	{
-		DirectX::XMFLOAT3 pos;
-		float padding;
-	};
+	{	
+		alignas(16) DirectX::XMFLOAT3 diffuseColor;
+		alignas(16) DirectX::XMFLOAT3 ambient;
+		alignas(16) mutable DirectX::XMFLOAT3 pos;
+		alignas(16) DirectX::XMFLOAT3 materialColor;
+		float attConst;
+		float attLin;
+		float attQuad;
+		float diffuseIntensity;
+	}cbData;
 	mutable PixelConstantBuffer<PointLightCBuf> cbuf;
 	mutable SolidSphere mesh;
-	mutable DirectX::XMFLOAT3 pos = { 0.0f,0.0f,0.0f };
 	const int windowWidth;
 	const int windowHeight;
 
