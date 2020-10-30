@@ -15,9 +15,11 @@ Interfaced with ImGui Library to spawn gui windows that allow the customization 
 
 Implemented a Camera object to navigate the scene.
 
-# In progress:
+Implemented dynamic lighting (phong shading) along with a point light object for a lighting simulation.
 
-Dynamic Lighting
+Procedurally generated geometry meshes and loaded them into the scene to test the efficiency of the current system with a relaxing & interative simulation.
+
+# In progress:
 
 Mesh Loading
 
