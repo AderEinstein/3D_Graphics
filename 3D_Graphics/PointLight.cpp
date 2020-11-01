@@ -37,7 +37,7 @@ void PointLight::SpawnControlWindow() noexcept
 	ImGui::End();
 }
 
-void PointLight::Update(Window& wnd) const noexcept(!IS_DEBUG)
+void PointLight::Update(Window& wnd, DirectX::FXMMATRIX view) const noexcept(!IS_DEBUG)
 {
 	while (!wnd.mouse.IsEmpty())
 	{
@@ -54,13 +54,18 @@ void PointLight::Update(Window& wnd) const noexcept(!IS_DEBUG)
 	if (wnd.mouse.LeftIsPressed()) 
 	{
 		float offsetY = 6.5f;	   // mouse offset to point light center
-		float cameraR = 20.0f;
-		cbData.pos.x = ((float)wnd.mouse.GetPosX() / (float(windowWidth) / 2) - 1.0f) * (cameraR + cbData.pos.z);
-		cbData.pos.y = (-(float)wnd.mouse.GetPosY() / (float(windowHeight) / 2) + 1.0f) * (cameraR + cbData.pos.z) - (offsetY + cbData.pos.z * 0.33);
+		float cameraZ = 20.0f;
+		cbData.pos.x = ((float)wnd.mouse.GetPosX() / (float(windowWidth) / 2) - 1.0f) * (cameraZ + cbData.pos.z);
+		cbData.pos.y = (-(float)wnd.mouse.GetPosY() / (float(windowHeight) / 2) + 1.0f) * (cameraZ + cbData.pos.z) - (offsetY + cbData.pos.z * 0.33);
 	}
 
-	mesh.SetPos(cbData.pos);					// Update mesh/model transform
-	cbuf.Update(wnd.Gfx(), cbData);				// Update light position constant buffer 
+	const auto dataCopy = cbData;
+	const auto pos = DirectX::XMLoadFloat3(&cbData.pos);
+	DirectX::XMStoreFloat3(&dataCopy.pos, DirectX::XMVector3Transform(pos, view)); // Make cbuf's dataCopy position relative to the camera
+
+	cbuf.Update(wnd.Gfx(), dataCopy);			// Update light position constant buffer (relative to camera position)
+	mesh.SetPos(cbData.pos);					// Update mesh/model transform (Note: the mesh's vertex transform const buffer is also made relative to the camera in the TransformCBuffer.cpp
+
 	cbuf.Bind(wnd.Gfx());						// Bind pixel shader constant buffer slot with light position constant bufer 
 }
 

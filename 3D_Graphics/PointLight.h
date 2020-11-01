@@ -27,7 +27,7 @@ private:
 
 public:
 	PointLight(Graphics& gfx, int windowWidth, int windowHeight, float radius = 0.5);
-	void Update(Window& wnd) const noexcept(!IS_DEBUG);
+	void Update(Window& wnd, DirectX::FXMMATRIX view) const noexcept(!IS_DEBUG);
 	void Draw(Graphics& gfx) const noexcept(!IS_DEBUG);
 	void SpawnControlWindow() noexcept;
 	void Reset() noexcept;

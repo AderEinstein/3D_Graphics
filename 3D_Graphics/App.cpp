@@ -41,7 +41,7 @@ void App::DoFrame()
 	wnd.Gfx().BeginFrame(0, g, b);
 
 	wnd.Gfx().SetCamera(cam.GetMatrix());
-	light.Update(wnd);
+	light.Update(wnd, cam.GetMatrix());
 
 	float dt = timer2.Mark() * speed_factor;
 	for (auto& d : drawables)
