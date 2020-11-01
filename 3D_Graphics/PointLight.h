@@ -19,6 +19,8 @@ private:
 		float attLin;
 		float attQuad;
 		float diffuseIntensity;
+		float specularIntensity;
+		float specularPower;
 	}cbData;
 	mutable PixelConstantBuffer<PointLightCBuf> cbuf;
 	mutable SolidSphere mesh;

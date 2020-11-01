@@ -34,6 +34,7 @@ private:
 	Timer timer2;
 	std::vector<std::unique_ptr<class Drawable>> drawables;
 	static constexpr size_t nDrawables = 180;
+	bool annimateBackground = false;
 	float speed_factor = 1.0f;
 
 	class Factory

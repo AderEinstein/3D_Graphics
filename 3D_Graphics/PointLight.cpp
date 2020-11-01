@@ -29,6 +29,10 @@ void PointLight::SpawnControlWindow() noexcept
 		ImGui::SliderFloat("Linear", &cbData.attLin, 0.0001f, 4.0f, "%.4f", 8);
 		ImGui::SliderFloat("Quadratic", &cbData.attQuad, 0.0000001f, 10.0f, "%.7f", 10);
 
+		ImGui::Text("Specular");
+		ImGui::SliderFloat("Specular Power", &cbData.specularPower, 1.0f, 100.0f, "%.1f");
+		ImGui::SliderFloat("Specular Intensity", &cbData.specularIntensity, 0.01f, 2.0f, "%.2f");
+
 		if (ImGui::Button("Reset"))
 		{
 			Reset();
@@ -83,6 +87,8 @@ void PointLight::Reset() noexcept
 		1.0f,
 		0.027f,
 		0.0028f,
-		1.0f		 
+		1.0f,
+		0.6f,
+		40.0f
 	};
 }

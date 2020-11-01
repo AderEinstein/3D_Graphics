@@ -35,8 +35,8 @@ int App::Go()
 void App::DoFrame()
 {
 	//Sky blue background animation colors
-	const float g = cos(0.5f*timer1.Peek()) / 2.0f + 0.35f;
-	const float b = std::max( 0.08f, cos(0.5f*timer1.Peek()) / 2.0f + 0.5f);
+	const float g = (annimateBackground)? cos(0.5f*timer1.Peek()) / 2.0f + 0.35f : 0.0f;
+	const float b = (annimateBackground)? cos(0.5f*timer1.Peek()) / 2.0f + 0.5f : 0.09f;
 	
 	wnd.Gfx().BeginFrame(0, g, b);
 
@@ -52,8 +52,9 @@ void App::DoFrame()
 	light.Draw(wnd.Gfx());
 	
 	// Imgui window to control simulation speed
-	if (ImGui::Begin("Simulation Speed"))
+	if (ImGui::Begin("Simulation"))
 	{
+		ImGui::Checkbox("Background Color Animation", &annimateBackground);
 		ImGui::SliderFloat("Speed Factor", &speed_factor, 0.0f, 4.0f);
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		ImGui::Text("Status: %s", wnd.kbd.KeyIsPressed(VK_SPACE) ? "PAUSED" : "RUNNING");

@@ -7,13 +7,13 @@ cbuffer LightCBuf
     float attLin;
     float attQuad;
     float diffuseIntensity;
+    float specularIntensity;
+    float specularPower;
 };
 
 cbuffer ObjectColorCBuf
 {
     float3 materialColor;
-    float specularIntensity;
-    float specularPower;
 };
 
 float4 main( float3 worldPos : Position,float3 n : Normal ) : SV_Target
