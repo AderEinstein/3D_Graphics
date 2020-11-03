@@ -47,8 +47,8 @@ private:
 		std::unique_ptr<Drawable> operator()()
 		{
 
-			/*switch (typedist(rng))
-			{
+			switch (typedist(rng))
+			{/*
 			case 0:
 				return std::make_unique<Pyramid>(
 					gfx, rng, adist, ddist,
@@ -58,13 +58,13 @@ private:
 				return std::make_unique<Sheet>(
 					gfx, rng, adist, ddist,
 					odist, rdist
-					);
+					);*/
 			case 2:
 				return std::make_unique<TexturedBox>(
 					gfx, rng, adist, ddist,
-					odist, rdist
+					odist, rdist, bdist
 					);
-			case 3:*/
+			case 3:
 				const DirectX::XMFLOAT3 material = { cdist(rng), cdist(rng), cdist(rng) };
 				return std::make_unique<Box>(
 					gfx, rng, material, adist, ddist,
@@ -74,11 +74,11 @@ private:
 				return std::make_unique<Melon>(
 					gfx, rng, adist, ddist,
 					odist, rdist, longdist, latdist
-					);
+					);*/
 			default:
 				assert(false && "Bad drawable type in factory");
 				return {};
-			}*/
+			}
 		}
 	private:
 		Graphics& gfx;
@@ -91,7 +91,7 @@ private:
 		std::uniform_real_distribution<float> rdist{ 6.0f,20.0f };
 		std::uniform_real_distribution<float> bdist{ 0.4f,3.0f };
 		/*std::uniform_int_distribution<int> latdist{ 5,20 };
-		std::uniform_int_distribution<int> longdist{ 10,40 };
-		std::uniform_int_distribution<int> typedist{ 0,4 };*/
+		std::uniform_int_distribution<int> longdist{ 10,40 };*/
+		std::uniform_int_distribution<int> typedist{ 2, 3};
 	};
 };

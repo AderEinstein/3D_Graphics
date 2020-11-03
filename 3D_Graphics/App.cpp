@@ -35,7 +35,7 @@ int App::Go()
 void App::DoFrame()
 {
 	//Sky blue background animation colors
-	const float g = (annimateBackground)? cos(0.5f*timer1.Peek()) / 2.0f + 0.35f : 0.0f;
+	const float g = (annimateBackground)? cos(0.5f*timer1.Peek()) / 2.0f + 0.35f : 0.05f;
 	const float b = (annimateBackground)? cos(0.5f*timer1.Peek()) / 2.0f + 0.5f : 0.09f;
 	
 	wnd.Gfx().BeginFrame(0, g, b);

@@ -23,7 +23,7 @@ float4 main( float3 worldPos : Position,float3 n : Normal ) : SV_Target
 	const float distToL = length( vToL );
 	const float3 dirToL = vToL / distToL;
 	// Attenuation
-    const float att = 1 / (attConst + attLin * distToL + attQuad * (distToL * distToL)); // Inverse relationship between distance and light intensity
+    const float att = 1.0f / (attConst + attLin * distToL + attQuad * (distToL * distToL)); // Inverse relationship between distance and light intensity
 	// Diffuse intensity
 	const float3 diffuse = diffuseColor * diffuseIntensity * att * max( 0.0f,dot( dirToL,n ) );
     // Reflected light vector

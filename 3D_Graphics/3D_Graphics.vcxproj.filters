@@ -159,6 +159,9 @@
     <ClCompile Include="Rectangle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Melon.cpp">
+      <Filter>Source Files\Drawable</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AderWin.h">
@@ -320,6 +323,9 @@
     <ClInclude Include="Rectangle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Melon.h">
+      <Filter>Header Files\Drawable</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="3D_Graphics.rc">
@@ -365,6 +371,18 @@
       <Filter>Shaders</Filter>
     </FxCompile>
     <FxCompile Include="SolidVS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="ColorIndexPS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="ColorIndexVS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="TexturedPhongPS.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="TexturedPhongVS.hlsl">
       <Filter>Shaders</Filter>
     </FxCompile>
   </ItemGroup>
