@@ -17,13 +17,6 @@ App::App()
 
 	wnd.Gfx().SetCamera(DirectX::XMMatrixTranslation(0.0f, 0.0f, 20.0f));
 	wnd.Gfx().SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, 0.75f, 0.5f, 40.0f));
-	
-	// Test assimp linkage with a basic call to the api  
-	Assimp::Importer imp;
-	auto model = imp.ReadFile("models\\suzanne.obj",
-		aiProcess_JoinIdenticalVertices
-	);
-	// End test
 }
 
 App::~App()

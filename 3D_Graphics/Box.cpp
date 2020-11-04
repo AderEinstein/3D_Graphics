@@ -1,7 +1,6 @@
 #include "Box.h"
 #include "BindableBase.h"
 #include "GfxThrowMacros.h"
-#include "Sphere.h"
 #include "Cube.h"
 
 namespace dx = DirectX;

@@ -4,6 +4,7 @@
 #include "Timer.h"
 #include "Box.h"
 #include "Pyramid.h"
+#include "AssimpTest.h"
 #include "AderMath.h"
 #include "Algorithm"
 #include <memory>
@@ -46,7 +47,7 @@ private:
 		{}
 		std::unique_ptr<Drawable> operator()()
 		{
-
+			const DirectX::XMFLOAT3 material = { cdist(rng), cdist(rng), cdist(rng) };
 			switch (typedist(rng))
 			{/*
 			case 0:
@@ -65,16 +66,15 @@ private:
 					odist, rdist, bdist
 					);
 			case 3:
-				const DirectX::XMFLOAT3 material = { cdist(rng), cdist(rng), cdist(rng) };
 				return std::make_unique<Box>(
 					gfx, rng, material, adist, ddist,
 					odist, rdist, bdist
 					);
-			/*case 4:
-				return std::make_unique<Melon>(
+			case 4:
+				return std::make_unique<AssimpTest>(
 					gfx, rng, adist, ddist,
-					odist, rdist, longdist, latdist
-					);*/
+					odist, rdist, 1.5f, material
+					);
 			default:
 				assert(false && "Bad drawable type in factory");
 				return {};
@@ -90,8 +90,6 @@ private:
 		std::uniform_real_distribution<float> odist{ 0.0f,PI * 0.08f };
 		std::uniform_real_distribution<float> rdist{ 6.0f,20.0f };
 		std::uniform_real_distribution<float> bdist{ 0.4f,3.0f };
-		/*std::uniform_int_distribution<int> latdist{ 5,20 };
-		std::uniform_int_distribution<int> longdist{ 10,40 };*/
-		std::uniform_int_distribution<int> typedist{ 2, 3};
+		std::uniform_int_distribution<int> typedist{ 2, 4};
 	};
 };

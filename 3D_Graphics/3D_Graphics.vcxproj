@@ -108,6 +108,7 @@
   <ItemGroup>
     <ClCompile Include="AderException.cpp" />
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="AssimpTest.cpp" />
     <ClCompile Include="Bindable.cpp" />
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -151,6 +152,7 @@
     <ClInclude Include="AderException.h" />
     <ClInclude Include="AderMath.h" />
     <ClInclude Include="App.h" />
+    <ClInclude Include="AssimpTest.h" />
     <ClInclude Include="Bindable.h" />
     <ClInclude Include="BindableBase.h" />
     <ClInclude Include="Box.h" />
