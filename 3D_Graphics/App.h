@@ -6,7 +6,7 @@
 #include "Pyramid.h"
 #include "AssimpTest.h"
 #include "AderMath.h"
-#include "Algorithm"
+#include <Algorithm>
 #include <memory>
 #include "GDIPlusManager.h"
 #include "Surface.h"
