@@ -1,6 +1,18 @@
-# 3D_Graphics Engine
+# AEinstein3D Graphics
 
-A Direct3D11/C++17 3D Rendering Project.
+![AEinstein3D Graphics 11_8_2020 9_51_37 AM](https://user-images.githubusercontent.com/50760776/98472467-242bba80-21a8-11eb-8c46-2a170b336d0a.png)
+
+AEinstein3D Graphics is an Interactive Application and 3D Rendering Engine written in Direct3D11/C++17.
+
+# Prerequisite:
+Visual Studio 2019/2017
+
+Windows OS
+
+# Getting Started
+Start by cloning the repository with git clone --recursive https://github.com/AderEinstein/3D_Graphics
+
+Open the solution file "3D_Graphics.sln" and run the application from Visual Studio.
 
 # CheckList:
 Implemented a specialized interface which creates a window with mouse and keyboard event handling using the WIN32 API.
@@ -15,12 +27,12 @@ Interfaced with ImGui Library to spawn gui windows that allow the customization 
 
 Implemented a Camera object to navigate the scene.
 
-Implemented dynamic lighting (phong shading) along with a point light object for a lighting simulation.
+Implemented dynamic lighting (phong shading) along with a point light drawable object for a lighting simulation.
 
 Procedurally generated geometry meshes and loaded them into the scene to test the efficiency of the current system with a relaxing & interative simulation.
 
-# In progress:
+Imported Asset-Import Library to load a wide range of 3D model formats.
 
-Mesh Loading
+# In progress:
 
 Normal Mapping
