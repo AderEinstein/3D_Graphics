@@ -16,6 +16,7 @@
 #include "imgui/imgui.h"
 #include "PointLight.h"
 #include "Camera.h"
+#include "Model.h"
 
 class App
 {
@@ -26,6 +27,7 @@ public:
 
 private:
 	void DoFrame();
+	void ShowModelWindow();
 
 	ImguiManager imgui;
 	Window wnd;
@@ -34,9 +36,19 @@ private:
 	Timer timer1;
 	Timer timer2;
 	std::vector<std::unique_ptr<class Drawable>> drawables;
-	static constexpr size_t nDrawables = 180;
+	static constexpr size_t nDrawables = 50;
 	bool annimateBackground = false;
 	float speed_factor = 1.0f;
+	Model nano{ wnd.Gfx(), "Models\\01Alocasia_obj.obj" };
+	struct
+	{
+		float roll = 0.0f;
+		float pitch = PI;
+		float yaw = 0.0f;
+		float x = 0.0f;
+		float y = -8.0f;
+		float z = 0.0f;
+	} modelPos;
 
 	class Factory
 	{

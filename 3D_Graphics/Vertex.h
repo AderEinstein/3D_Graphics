@@ -191,7 +191,7 @@ namespace AderVertex
 
 
 
-class Vertex // Defines a proxy/view over the vertex layout and vertex buffer
+class Vertex // Defines a proxy/view over the layout and data of a given vertex
 {
 	friend class VertexBuffer;
 protected:
@@ -350,6 +350,7 @@ public:
 	{
 		return const_cast<VertexBuffer&>(*this)[i];
 	}
+
 private:
 	std::vector<char> buffer;
 	VertexLayout layout;

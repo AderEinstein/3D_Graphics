@@ -67,13 +67,13 @@ TexturedBox::TexturedBox( Graphics& gfx,
 
 	// Select a random texture for each textured box
 	if (rdist(rng) < 10)
-		AddBind(std::make_unique<Texture>(gfx, Surface::FromFile("Images\\box texture dirty metal.jpg")));
+		AddBind(std::make_unique<Texture>(gfx, Surface::FromFile("Images\\box texture metal.jpg")));
 	else if(rdist(rng) < 14)
 		AddBind(std::make_unique<Texture>(gfx, Surface::FromFile("Images\\box texture framed.jpg")));
 	else if(rdist(rng) < 18)
 		AddBind(std::make_unique<Texture>(gfx, Surface::FromFile("Images\\box texture wood.jpg")));
 	else
-		AddBind(std::make_unique<Texture>(gfx, Surface::FromFile("Images\\box texture metal.jpg")));
+		AddBind(std::make_unique<Texture>(gfx, Surface::FromFile("Images\\box texture dirty metal.jpg")));
 
 	// Model deformation transform 
 	dx::XMStoreFloat3x3(

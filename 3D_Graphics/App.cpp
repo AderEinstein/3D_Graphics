@@ -52,6 +52,11 @@ void App::DoFrame()
 		d->Update(wnd.kbd.KeyIsPressed(VK_SPACE) ? 0.0f : dt);
 		d->Draw(wnd.Gfx());
 	}
+
+	const auto transform = 
+		dx::XMMatrixRotationRollPitchYaw(modelPos.roll, modelPos.pitch, modelPos.yaw) *
+		dx::XMMatrixTranslation(modelPos.x, modelPos.y, modelPos.z);
+	nano.Draw(wnd.Gfx(), transform);
 	light.Draw(wnd.Gfx());
 	
 	// Imgui window to control simulation speed
@@ -67,8 +72,27 @@ void App::DoFrame()
 	// Imgui windows to control camera and light
 	cam.SpawnControlWindow();
 	light.SpawnControlWindow();
+	ShowModelWindow();
 
 	// Present frame buffer
 	wnd.Gfx().EndFrame();
 }
 
+void App::ShowModelWindow()
+{
+	if (ImGui::Begin("Model"))
+	{
+		using namespace std::string_literals;
+
+		ImGui::Text("Orientation");
+		ImGui::SliderAngle("Roll", &modelPos.roll, -180.0f, 180.0f);
+		ImGui::SliderAngle("Pitch", &modelPos.pitch, 0.0f, 360.0f);
+		ImGui::SliderAngle("Yaw", &modelPos.yaw, -180.0f, 180.0f);
+
+		ImGui::Text("Position");
+		ImGui::SliderFloat("X", &modelPos.x, -20.0f, 20.0f);
+		ImGui::SliderFloat("Y", &modelPos.y, -20.0f, 20.0f);
+		ImGui::SliderFloat("Z", &modelPos.z, -20.0f, 20.0f);
+	}
+	ImGui::End();
+}
