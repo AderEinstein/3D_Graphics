@@ -39,7 +39,7 @@ private:
 	static constexpr size_t nDrawables = 50;
 	bool annimateBackground = false;
 	float speed_factor = 1.0f;
-	Model nano{ wnd.Gfx(), "Models\\01Alocasia_obj.obj" };
+	Model nano{ wnd.Gfx(), "Models\\nanosuit.obj" };
 	struct
 	{
 		float roll = 0.0f;
